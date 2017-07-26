@@ -15,4 +15,19 @@ This is a basic Node, Express, and PostgreSQL app built to fulfill the [FreeCode
 more info will be provided as development progress
 
 ## Dev Notes
-* more info will be provided as development progress
+A config.json file must be provided in order for this project to run locally. 
+
+The config file must contain the following variables for both tseting and development
+* port: the port you wish to use to host the app locally
+
+**Example config**
+```json
+{
+  "test": {
+    "port": 3000
+  },
+  "development": {
+    "port": 3000
+  }
+}
+```
