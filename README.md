@@ -32,6 +32,9 @@ The config file must contain the following variables for both tseting and develo
 }
 ```
 
+This project was built using PostgreSQL. You must have postgres installed in order to run the project locally. 
+
 ## TODOS
 * get a favicon
 * figure out how to use debug npm module
+* public and views folders are not currently in use. Remove if we end up never needing them
