@@ -4,6 +4,9 @@ const favicon    = require('serve-favicon')
 const logger     = require('morgan')
 const path       = require('path')
 
+// routes
+const index = require('./routes/index')
+
 require('./config/config')
 // environment variables
 const app  = express()
@@ -13,6 +16,8 @@ const port = process.env.PORT
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
+
+app.use('/', index)
 
 // catch all (404) route handler
 app.use((req, res) => {
