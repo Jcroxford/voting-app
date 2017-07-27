@@ -31,3 +31,7 @@ The config file must contain the following variables for both tseting and develo
   }
 }
 ```
+
+## TODOS
+* get a favicon
+* figure out how to use debug npm module
