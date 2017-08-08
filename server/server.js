@@ -7,30 +7,36 @@ const path       = require('path')
 // routes
 const index = require('./routes/index')
 
+// custom env variables
 require('./config/config')
 
 // environment variables
 const app  = express()
 const port = process.env.PORT
 
+// // database connect
+// const Sequelize = require('sequelize')
+
+// const {database, dbUsername, dbPassword, dialect} = process.env
+
+// const sequelize = new Sequelize(database, dbUsername, dbPassword, {
+//   dialect
+// })
+
 // database connect
-const Sequelize = require('sequelize')
+const db = require('./models/index')
+// const Sequelize = require('sequelize')
 
-const {database, dbUsername, dbPassword, dialect} = process.env
 
-const sequelize = new Sequelize(database, dbUsername, dbPassword, {
-  dialect
-})
-
-sequelize.authenticate()
+db.sequelize.authenticate()
   .then( () => console.log('connected successfully'))
   .catch ( err => console.log('connection failed:', err))
 
 // middleware
 // TODO: app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({extended: false}))
+// app.use(bodyParser.json()) FIXME: not used yet
+// app.use(bodyParser.urlencoded({extended: false})) FIXME: not used yet
 
 app.use('/', index)
 
