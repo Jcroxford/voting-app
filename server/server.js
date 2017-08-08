@@ -12,20 +12,10 @@ require('./config/config')
 
 // environment variables
 const app  = express()
-const port = process.env.PORT
-
-// // database connect
-// const Sequelize = require('sequelize')
-
-// const {database, dbUsername, dbPassword, dialect} = process.env
-
-// const sequelize = new Sequelize(database, dbUsername, dbPassword, {
-//   dialect
-// })
+const port = process.env.port
 
 // database connect
 const db = require('./models/index')
-// const Sequelize = require('sequelize')
 
 
 db.sequelize.authenticate()
