@@ -1,8 +1,8 @@
 const bodyParser = require('body-parser')
-const express    = require('express')
-const favicon    = require('serve-favicon')
-const logger     = require('morgan')
-const path       = require('path')
+const express = require('express')
+const favicon = require('serve-favicon')
+const logger = require('morgan')
+const path = require('path')
 
 // routes
 const index = require('./routes/index')
@@ -11,22 +11,21 @@ const index = require('./routes/index')
 require('./config/config')
 
 // environment variables
-const app  = express()
+const app = express()
 const port = process.env.port
 
-// database connect
+// database connect 
 const db = require('./models/index')
 
-
 db.sequelize.authenticate()
-  .then( () => console.log('connected successfully'))
-  .catch ( err => console.log('connection failed:', err))
+  .then(() => console.log('connected successfully'))
+  .catch(err => console.log('connection failed:', err))
 
 // middleware
-// TODO: app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
-// app.use(bodyParser.json()) FIXME: not used yet
-// app.use(bodyParser.urlencoded({extended: false})) FIXME: not used yet
+app.use(bodyParser.json()) // TODO: not used yet. remove if not needed
+app.use(bodyParser.urlencoded({extended: false})) // TODO: not used yet. remove if not needed
 
 app.use('/', index)
 
