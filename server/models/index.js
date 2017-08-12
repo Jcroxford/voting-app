@@ -30,22 +30,25 @@ sequelize = new Sequelize(database, dbUsername, dbPassword, {
     idle: 1000
   }
 })
-
-const Polls = sequelize.define('Polls', {
-  title: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
-})
-
-Polls.sync({force: true})
-  .then(() => {
-    return Polls.create({
-      title: 'this is a test poll'
-    })
-  })
-  .then(() => Polls.findAll())
+let db = {}
+Polls = sequelize.import(`${__dirname}/Polls`)
+Polls.findAll({})
   .then(polls => console.log(polls))
+// const Polls = sequelize.define('Polls', {
+//   title: {
+//     type: Sequelize.STRING,
+//     allowNull: false
+//   }
+// })
+
+// Polls.sync({force: true})
+//   .then(() => {
+//     return Polls.create({
+//       title: 'this is a test poll'
+//     })
+//   })
+//   .then(() => Polls.findAll())
+//   .then(polls => console.log(polls))
 // end isolation testing variables/config
 
 // load schema modules
@@ -69,7 +72,6 @@ Polls.sync({force: true})
 // module.exports = db
 
 // FIXME: temporary for isolated db testing
-
 sequelize.authenticate()
   .then(() => console.log('connected to db successfully'))
   .catch(error => console.log('error', error))
