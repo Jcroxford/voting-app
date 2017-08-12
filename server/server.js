@@ -15,14 +15,15 @@ const app = express()
 const port = process.env.port
 
 // database connect 
-const db = require('./models/index')
 
-db.sequelize.authenticate()
-  .then(() => console.log('connected successfully'))
-  .catch(err => console.log('connection failed:', err))
+// const db = require('./models/index')
+
+// db.sequelize.authenticate()
+//   .then(() => console.log('connected successfully'))
+//   .catch(err => console.log('connection failed:', err))
 
 // middleware
-app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
 app.use(bodyParser.json()) // TODO: not used yet. remove if not needed
 app.use(bodyParser.urlencoded({extended: false})) // TODO: not used yet. remove if not needed
@@ -34,4 +35,9 @@ app.use((req, res) => {
   res.status(404).send('404 page not found')
 })
 
-app.listen(port, () => console.log(`server listening on http://localhost:${port}`))
+const models = require('./models/index')
+
+models.sequelize.sync()
+  .then(() => {
+    app.listen(port, () => console.log(`server listening on http://localhost:${port}`))
+  })
