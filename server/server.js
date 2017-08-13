@@ -14,14 +14,6 @@ require('./config/config')
 const app = express()
 const port = process.env.port
 
-// database connect 
-
-// const db = require('./models/index')
-
-// db.sequelize.authenticate()
-//   .then(() => console.log('connected successfully'))
-//   .catch(err => console.log('connection failed:', err))
-
 // middleware
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 app.use(logger('dev'))
@@ -37,7 +29,10 @@ app.use((req, res) => {
 
 const models = require('./models/index')
 
-models.sequelize.sync()
+// database connect 
+models.sequelize
+  .sync()
   .then(() => {
     app.listen(port, () => console.log(`server listening on http://localhost:${port}`))
   })
+  .catch(error => console.log(error))
