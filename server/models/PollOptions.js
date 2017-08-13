@@ -8,13 +8,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       defaultValue: 0
     }
-  },
-  {
-    classMethods: {
-      associate: (models) => {
-        PollOptions.belongsTo(models.Polls)
-      }
-    }
   })
 
   return PollOptions

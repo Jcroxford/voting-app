@@ -4,14 +4,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     }
-  },
-  {
-    classMethods: {
-      associate: (models) => {
-        // Polls.belongsTo(models.Users)
-        Polls.hasMany(models.PollOptions)
-      }
-    }
   })
 
   return Polls

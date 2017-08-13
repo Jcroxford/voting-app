@@ -1,8 +1,11 @@
-const fs = require('fs')
-const path = require('path')
+// const fs = require('fs')
+// const path = require('path')
 const Sequelize = require('sequelize')
 
-// const {database, dbUsername, dbPassword, dialect} = process.env // FIXME: add back in once done with db isolation testing
+// load custom env variables
+require('../config/config')
+
+const {database, dbUsername, dbPassword, dialect} = process.env
 
 let sequelize
 if (process.env.environment === 'development' || process.env.environment === 'test') {
@@ -16,68 +19,32 @@ if (process.env.environment === 'development' || process.env.environment === 'te
   })
 }
 
-// FIXME: for isolated db testing
-const database = 'voting-app-dev'
-const dbUsername = 'root'
-const dbPassword = 'root'
-const dialect = 'postgres'
-sequelize = new Sequelize(database, dbUsername, dbPassword, {
-  dialect,
-  pool: {
-    max: 9,
-    min: 0,
-    idle: 1000
-  }
-})
-
 // load schema modules
-let db = {}
-fs.readdirSync(__dirname)
-  .filter(file => (file.indexOf('.') !== 0) && (file !== 'index.js'))
-  .forEach(file => {
-    const model = sequelize.import(path.join(__dirname, file))
-    db[model.name] = model
-  })
+// let db = {}
+// fs.readdirSync(__dirname)
+//   .filter(file => (file.indexOf('.') !== 0) && (file !== 'index.js'))
+//   .forEach(file => {
+//     const model = sequelize.import(path.join(__dirname, file))
+//     db[model.name] = model
+//   })
 
-Object.keys(db).forEach(modelName => {
-  if ('associate' in db[modelName]) {
-    db[modelName].associate(db)
-  }
-})
+// Object.keys(db).forEach(modelName => {
+//   if ('associate' in db[modelName]) {
+//     db[modelName].associate(db)
+//   }
+// })
 
+const db = {}
 db.sequelize = sequelize
 db.Sequelize = Sequelize
 
+db.Users = require('./Users')(sequelize, Sequelize)
+db.Polls = require('./Polls')(sequelize, Sequelize)
+db.PollOptions = require('./PollOptions')(sequelize, Sequelize)
+
+db.Polls.belongsTo(db.Users)
+db.Users.hasMany(db.Polls)
+db.PollOptions.belongsTo(db.Polls)
+db.Polls.hasMany(db.PollOptions)
+
 module.exports = db
-
-// FIXME: temporary for isolated db testing
-
-// db.Polls.findAll({})
-//   .then(polls => console.log(polls))
-// const Polls = sequelize.define('Polls', {
-//   title: {
-//     type: Sequelize.STRING,
-//     allowNull: false
-//   }
-// })
-// Promise.all([db.Polls.sync({force: true}), db.Users.sync({force: true}), db.PoppOptions.sync({force: true})])
-//   .then(() => {
-//     return db.Users.create({
-//       name: 'joe',
-//       email: 'test@email.com',
-//       password: 'password'
-//     })
-//   })
-//   .then(() => {
-//     return db.Polls.craete({
-//       title: 'poll title',
-//       UsersId: 1
-//     })
-//   })
-//   .then(() => db.Polls.findAll())
-//   .then(polls => console.log(polls))
-// end isolation testing variables/config
-
-// sequelize.authenticate()
-//   .then(() => console.log('connected to db successfully'))
-//   .catch(error => console.log('error', error))

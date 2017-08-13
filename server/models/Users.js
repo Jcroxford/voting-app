@@ -13,13 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     }
-  },
-  {
-    // classMethods: {
-    //   associate: (models) => {
-    //     Users.hasMany(models.Polls)
-    //   }
-    // }
   })
 
   return Users
