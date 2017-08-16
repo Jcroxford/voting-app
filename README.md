@@ -41,7 +41,11 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 
 
 ## Limitations to Consider
-* user should only be able to vote on a poll once
+* user should only be able to vote on a poll once(check and store ip address?)
 * create understandable error messages for db tables when invalid input is given
 * handle error for multiple sign up attempts from the same email(find or create?)
 * setup password reset
+* add shareing to social media? (twitter, facebook maybe prepoulate stuff)
+* passport authentication for github? twitter?
+* paginate all votes view
+* add ability for authenticated user to add poll options to existing poll? maybe maybe not? if not remove from user story.
