@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcryptjs')
 const express = require('express')
 const jwt = require('jsonwebtoken')
 const router = express.Router()
@@ -12,7 +12,7 @@ const models = require('../models/index')
     4) passport authentication with twitter/github
     5) user authenticated route to view their existing polls
     6) user authenticated route to create a new poll
-    7) accept vote route
+    7) accept vote route(public)
     8) get all/group of polls route
     9) get detailed single poll route
     10) get detailed single poll route as an authenticated user? (maybe not needed)
@@ -45,15 +45,27 @@ router.post('/api/create/user', (req, res) => {
     })
     .then(users => {
       if (users.length) throw new Error('username or email in use')
-
+      
+      return bcrypt.genSalt(10)
+    })
+    .then(salt => bcrypt.hash(password, salt))
+    .then(hashedPassword => {
       return models.Users
         .create({
           username,
           email,
-          password
+          password: hashedPassword
         })
     })
-    .then(user => jwt.sign({username: username}, 'tempsecretkey'))
+    // .then(users => {
+    //   return models.Users
+    //     .create({
+    //       username,
+    //       email,
+    //       password
+    //     })
+    // })
+    .then(user => jwt.sign({username}, 'tempsecretkey'))
     .then(token => res.header('x-auth', token).json({success: 'user created successfully'}))
     .catch(error => {
       // custom error handling
