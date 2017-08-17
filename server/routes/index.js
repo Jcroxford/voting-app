@@ -53,8 +53,7 @@ router.post('/api/create/user', (req, res) => {
           password
         })
     })
-    // .then(user => res.json(user))
-    .then(user => jwt.sign({id: user.id}, 'tempsecretkey'))
+    .then(user => jwt.sign({username: username}, 'tempsecretkey'))
     .then(token => res.header('x-auth', token).json({success: 'user created successfully'}))
     .catch(error => {
       // custom error handling
@@ -67,12 +66,23 @@ router.post('/api/create/user', (req, res) => {
 })
 
 router.post('/api/create/poll', (req, res) => {
-  console.log(req.body.username)
+  const token = req.get('x-auth')
+
+  if (!token) return res.status(400).json({error: 'no auth token present'})
+
+  // confirm valid token
+  try {
+    var decoded = jwt.verify(token, 'tempsecretkey')
+  } catch (error) {
+    return res.status(400).json({error: error.message})
+  }
+
+  // verify user and insert
   models.Users
     .findAll({
       limit: 1,
       where: {
-        username: req.body.username
+        username: decoded.username
       },
       attributes: ['id']
 
