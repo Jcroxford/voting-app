@@ -1,4 +1,6 @@
+const bcrypt = require('bcrypt')
 const express = require('express')
+const jwt = require('jsonwebtoken')
 const router = express.Router()
 
 const models = require('../models/index')
@@ -17,27 +19,75 @@ const models = require('../models/index')
     11) handle errors better
 */
 
-// *** api routes ***
-// User routes
-router.post('/api/createuser', (req, res) => {
+// *** User routes ***
+router.post('/api/create/user', (req, res) => {
+  const {username, email, password} = req.body
+
+  // validate body info
+  if (!username || !email || !password) return res.json({error: 'invalid input'})
+
   models.Users
-    .create({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.password
+    .findAll({
+      where: {
+        $or: [
+          {
+            username: {
+              $eq: req.body.username
+            }
+          },
+          {
+            email: {
+              $eq: req.body.email
+            }
+          }
+        ]
+      }
     })
-    .then(user => res.json(user))
-    .catch(error => console.log(error))
+    .then(users => {
+      if (users.length) throw new Error('username or email in use')
+
+      return models.Users
+        .create({
+          username,
+          email,
+          password
+        })
+    })
+    // .then(user => res.json(user))
+    .then(user => jwt.sign({id: user.id}, 'tempsecretkey'))
+    .then(token => res.header('x-auth', token).json({success: 'user created successfully'}))
+    .catch(error => {
+      // custom error handling
+      switch (error.message) {
+        case 'username or email in use':
+          res.status(400).json({error: error.message})
+          break
+      }
+    })
 })
 
-router.post('/api/createpoll', (req, res) => {
-  models.Polls
-    .create({
-      title: req.body.title,
-      PollOptions: req.body.options
-    },
-    {
-      include: [models.PollOptions]
+router.post('/api/create/poll', (req, res) => {
+  console.log(req.body.username)
+  models.Users
+    .findAll({
+      limit: 1,
+      where: {
+        username: req.body.username
+      },
+      attributes: ['id']
+
+    })
+    .then(users => users[0].id)
+    .then(UserId => {
+      models.Polls
+        .create({
+          UserId,
+          title: req.body.title,
+          PollOptions: req.body.options
+        },
+        {
+          include: [models.PollOptions]
+        })
     })
     .then(poll => res.json(poll))
     .catch(error => console.log(error))
