@@ -7,7 +7,6 @@ const models = require('../models/index')
 
 /* general things left to do for routes
     1) delete poll route (must be authenticated)
-    3) change password/users settings route
     5) user authenticated route to view their existing polls
     6) user authenticated route to create a new poll
     7) accept vote route(public)
@@ -15,10 +14,9 @@ const models = require('../models/index')
     9) get detailed single poll route
     10) get detailed single poll route as an authenticated user? (maybe not needed)
     11) handle errors better
-    12) login route
-    13) signup/login sends back some data about user (eg username for a welcome message, maybe storing and returning a profile picture)
-    14) potenially restructure login route to work with either either a valid username or valid email address?
-    15) add a real hidden secret key
+    15) add a real hidden secret key for jwt generation and authentication
+    16) make code more dry with controller functions?
+    17) add restrictions to password(length certain characters needed etc)
 */
 
 // *** User routes ***
@@ -120,6 +118,60 @@ router.post('/api/user/login', (req, res) => {
           break
         default:
           res.status(500).json({error: 'internal error occured'})
+          console.log(error)
+      }
+    })
+})
+
+router.post('/api/user/password/change', (req, res) => {
+  const token = req.get('x-auth')
+  const {currentPassword, newPassword} = req.body
+
+  if (!token) return res.status(400).json({error: 'no auth token present'})
+
+  // confirm valid token
+  try {
+    var decoded = jwt.verify(token, 'tempsecretkey')
+  } catch (error) {
+    return res.status(400).json({error: error.message})
+  }
+
+  // verify user and password
+  models.Users
+    .findAll({
+      limit: 1,
+      where: {
+        username: decoded.username
+      },
+      attributes: ['password']
+    })
+    .then(users => users[0].password)
+    .then(userPassword => bcrypt.compare(currentPassword, userPassword))
+    .then(passwordMatched => {
+      if (!passwordMatched) throw new Error('password incorrect')
+
+      return bcrypt.genSalt(10)
+    })
+    .then(salt => bcrypt.hash(newPassword, salt))
+    .then(newHashedPassword => {
+      models.Users.update(
+        {
+          password: newHashedPassword
+        },
+        {
+          where: {
+            username: decoded.username
+          }
+        })
+    })
+    .then(() => res.json({success: 'password updated successfully'}))
+    .catch(error => {
+      switch (error.message) {
+        case 'password incorrect':
+          res.status(400).json({error: 'password incorrect'})
+          break
+        default:
+          res.status(500).json({error: 'internal error'})
           console.log(error)
       }
     })
