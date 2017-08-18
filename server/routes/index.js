@@ -5,7 +5,7 @@ const router = express.Router()
 
 const models = require('../models/index')
 
-const passportService = require('../services/passport')
+const passportService = require('../services/passport') // used automagically by passport
 const passport = require('passport')
 
 const requireAuth = passport.authenticate('jwt', { session: false })
@@ -25,11 +25,6 @@ const requireAuth = passport.authenticate('jwt', { session: false })
 function generateJwtForUser (user) {
   return jwt.sign({sub: user.id}, process.env.secret)
 }
-
-// FIXME: temporary route for passport testing
-router.get('/test/passport', requireAuth, (req, res) => {
-  res.send(`authenticated! \n ${JSON.stringify(req.user)}`)
-})
 
 // *** User routes ***
 router.post('/api/create/user', (req, res) => {
@@ -131,30 +126,11 @@ router.post('/api/user/login', (req, res) => {
     })
 })
 
-router.post('/api/user/password/change', (req, res) => {
-  const token = req.get('x-auth')
+router.post('/api/user/password/change', requireAuth, (req, res) => {
   const {currentPassword, newPassword} = req.body
 
-  if (!token) return res.status(400).json({error: 'no auth token present'})
-
-  // confirm valid token
-  try {
-    var decoded = jwt.verify(token, 'tempsecretkey')
-  } catch (error) {
-    return res.status(400).json({error: error.message})
-  }
-
-  // verify user and password
-  models.Users
-    .findAll({
-      limit: 1,
-      where: {
-        username: decoded.username
-      },
-      attributes: ['password']
-    })
-    .then(users => users[0].password)
-    .then(userPassword => bcrypt.compare(currentPassword, userPassword))
+  // // verify user and password
+  bcrypt.compare(currentPassword, req.user.password)
     .then(passwordMatched => {
       if (!passwordMatched) throw new Error('password incorrect')
 
@@ -168,7 +144,7 @@ router.post('/api/user/password/change', (req, res) => {
         },
         {
           where: {
-            username: decoded.username
+            id: req.user.id
           }
         })
     })
@@ -185,39 +161,16 @@ router.post('/api/user/password/change', (req, res) => {
     })
 })
 
-router.post('/api/create/poll', (req, res) => {
-  const token = req.get('x-auth')
-
-  if (!token) return res.status(400).json({error: 'no auth token present'})
-
-  // confirm valid token
-  try {
-    var decoded = jwt.verify(token, 'tempsecretkey')
-  } catch (error) {
-    return res.status(400).json({error: error.message})
-  }
-
+router.post('/api/create/poll', requireAuth, (req, res) => {
   // verify user and insert
-  models.Users
-    .findAll({
-      limit: 1,
-      where: {
-        username: decoded.username
-      },
-      attributes: ['id']
-
-    })
-    .then(users => users[0].id)
-    .then(UserId => {
-      return models.Polls
-        .create({
-          UserId,
-          title: req.body.title,
-          PollOptions: req.body.options
-        },
-        {
-          include: [models.PollOptions]
-        })
+  models.Polls
+    .create({
+      UserId: req.user.id,
+      title: req.body.title,
+      PollOptions: req.body.options
+    },
+    {
+      include: [models.PollOptions]
     })
     .then(() => res.json({success: 'poll created successfully'}))
     .catch(error => console.log(error))

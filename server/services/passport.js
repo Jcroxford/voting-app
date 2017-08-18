@@ -3,13 +3,13 @@ const JwtStrategy = require('passport-jwt').Strategy
 const ExtractJwt = require('passport-jwt').ExtractJwt
 
 const models = require('../models/index')
-console.log('secret from passport file', process.env.secret)
+
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
   secretOrKey: process.env.secret
 }
 
-// payload is decoded jwt doken (if it exists)
+// payload == decoded jwt doken (if it exists)
 const jwtLogin = new JwtStrategy(jwtOptions, function (payload, done) {
   models.Users
     .findAll({
