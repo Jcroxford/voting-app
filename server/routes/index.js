@@ -9,6 +9,7 @@ const passportService = require('../services/passport') // used automagically by
 const passport = require('passport')
 
 const requireAuth = passport.authenticate('jwt', { session: false })
+const requireSignin = passport.authenticate('local', { session: false })
 /* general things left to do for routes
     1) delete poll route (must be authenticated)
     5) user authenticated route to view their existing polls
@@ -16,9 +17,8 @@ const requireAuth = passport.authenticate('jwt', { session: false })
     8) get all/group of polls route
     9) get detailed single poll route
     11) handle errors better
-    16) make code more dry with controller functions?
     17) add restrictions to password(length certain characters needed etc)
-    18) refactor to use passport
+    19)
 */
 
 // *** helper functions ***
@@ -78,52 +78,8 @@ router.post('/api/create/user', (req, res) => {
     })
 })
 
-router.post('/api/user/login', (req, res) => {
-  const {userIdentifier, password} = req.body // userIdentifier can be either a user's email or username
-
-  let user
-  models.Users
-    .findAll({
-      limit: 1,
-      where: {
-        $or: [
-          {
-            username: {
-              $eq: userIdentifier
-            }
-          },
-          {
-            email: {
-              $eq: userIdentifier
-            }
-          }
-        ]
-      }
-    })
-    .then(users => {
-      if (!users.length) throw new Error('user not found')
-      user = users[0]
-
-      return bcrypt.compare(password, user.password)
-    })
-    .then(passwordMatched => {
-      if (!passwordMatched) throw new Error('password incorrect')
-
-      res.json({token: generateJwtForUser(user)})
-    })
-    .catch(error => {
-      switch (error.message) {
-        case 'user not found':
-          res.status(400).json({error: 'user not found'})
-          break
-        case 'password incorrect':
-          res.status(400).json({error: 'password incorrect'})
-          break
-        default:
-          res.status(500).json({error: 'internal error occured'})
-          console.log(error)
-      }
-    })
+router.post('/api/user/login', requireSignin, (req, res) => {
+  res.json({token: generateJwtForUser(req.user)})
 })
 
 router.post('/api/user/password/change', requireAuth, (req, res) => {
