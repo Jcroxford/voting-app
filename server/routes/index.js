@@ -201,7 +201,7 @@ router.post('/api/create/poll', (req, res) => {
     })
     .then(users => users[0].id)
     .then(UserId => {
-      models.Polls
+      return models.Polls
         .create({
           UserId,
           title: req.body.title,
@@ -211,7 +211,7 @@ router.post('/api/create/poll', (req, res) => {
           include: [models.PollOptions]
         })
     })
-    .then(poll => res.json(poll)) // FIXME: not returning any data
+    .then(() => res.json({success: 'poll created successfully'}))
     .catch(error => console.log(error))
 })
 
