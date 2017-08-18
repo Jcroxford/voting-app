@@ -8,7 +8,6 @@ const models = require('../models/index')
 /* general things left to do for routes
     1) delete poll route (must be authenticated)
     5) user authenticated route to view their existing polls
-    6) user authenticated route to create a new poll
     7) accept vote route(public)
     8) get all/group of polls route
     9) get detailed single poll route
@@ -17,7 +16,14 @@ const models = require('../models/index')
     15) add a real hidden secret key for jwt generation and authentication
     16) make code more dry with controller functions?
     17) add restrictions to password(length certain characters needed etc)
+    18) refactor to use passport
 */
+
+// *** helper functions ***
+function generateJwtForUser (user) {
+  // console.error('user', user)
+  return jwt.sign({sub: user.id}, process.env.secret)
+}
 
 // *** User routes ***
 router.post('/api/create/user', (req, res) => {
@@ -57,8 +63,7 @@ router.post('/api/create/user', (req, res) => {
           password: hashedPassword
         })
     })
-    .then(user => jwt.sign({username}, 'tempsecretkey'))
-    .then(token => res.header('x-auth', token).json({success: 'user created successfully'}))
+    .then(user => res.json({token: generateJwtForUser(user)}))
     .catch(error => {
       // custom error handling
       switch (error.message) {
@@ -92,12 +97,10 @@ router.post('/api/user/login', (req, res) => {
             }
           }
         ]
-      },
-      attributes: ['username', 'password']
+      }
     })
     .then(users => {
       if (!users.length) throw new Error('user not found')
-
       user = users[0]
 
       return bcrypt.compare(password, user.password)
@@ -105,9 +108,8 @@ router.post('/api/user/login', (req, res) => {
     .then(passwordMatched => {
       if (!passwordMatched) throw new Error('password incorrect')
 
-      return jwt.sign({username: user.username}, 'tempsecretkey')
+      res.json({token: generateJwtForUser(user)})
     })
-    .then(token => res.header('x-auth', token).json({username: user.username}))
     .catch(error => {
       switch (error.message) {
         case 'user not found':
