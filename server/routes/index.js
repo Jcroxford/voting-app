@@ -12,10 +12,7 @@ const requireAuth = passport.authenticate('jwt', { session: false })
 const requireSignin = passport.authenticate('local', { session: false })
 /* general things left to do for routes
     1) delete poll route (must be authenticated)
-    5) user authenticated route to view their existing polls
     7) accept vote route(public) figure out how to prevent a user for voting on one poll more than once ip?
-    8) get all/group of polls route
-    9) get detailed single poll route
     11) handle errors better
     19)
 */
@@ -30,7 +27,7 @@ router.post('/api/create/user', (req, res) => {
   const {username, email, password} = req.body
 
   // validate body info
-  if (!username || !email || !password) { return res.json({error: 'invalid input'}) }
+  if (!username || !email || !password) { return res.json({ error: 'invalid input' }) }
 
   models.Users
     .findAll({
@@ -63,22 +60,22 @@ router.post('/api/create/user', (req, res) => {
           password: hashedPassword
         })
     })
-    .then(user => res.json({token: generateJwtForUser(user)}))
+    .then(user => res.json({ token: generateJwtForUser(user) }))
     .catch(error => {
       // custom error handling
       switch (error.message) {
         case 'username or email in use':
-          res.status(400).json({error: error.message})
+          res.status(400).json({ error: error.message })
           break
         default:
-          res.status(500).json({error: 'internal error occured'})
+          res.status(500).json({ error: 'internal error occured' })
           console.log(error)
       }
     })
 })
 
 router.post('/api/user/login', requireSignin, (req, res) => {
-  res.json({token: generateJwtForUser(req.user)})
+  res.json({ token: generateJwtForUser(req.user) })
 })
 
 router.post('/api/user/password/change', requireAuth, (req, res) => {
@@ -103,7 +100,7 @@ router.post('/api/user/password/change', requireAuth, (req, res) => {
           }
         })
     })
-    .then(() => res.json({success: 'password updated successfully'}))
+    .then(() => res.json({ success: 'password updated successfully' }))
     .catch(error => {
       switch (error.message) {
         case 'password incorrect':
@@ -127,8 +124,21 @@ router.post('/api/create/poll', requireAuth, (req, res) => {
     {
       include: [models.PollOptions]
     })
-    .then(() => res.json({success: 'poll created successfully'}))
+    .then(() => res.json({ success: 'poll created successfully' }))
     .catch(error => console.log(error))
+})
+
+router.get('/api/user/polls', requireAuth, (req, res) => {
+  models.Polls
+    .findAll({
+      where: { UserId: req.user.id },
+      attributes: ['id', 'title']
+    })
+    .then(polls => res.json({ polls }))
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({ error: 'internal error' })
+    })
 })
 
 // *** public routes ***
@@ -161,7 +171,7 @@ router.get('/api/polls/detail/:pollId', (req, res) => {
       where: {PollId: req.params.pollId},
       attributes: ['id', 'pollText', 'voteCount']
     })
-    .then(pollOptions => res.json({pollOptions}))
+    .then(pollOptions => res.json({ pollOptions }))
     .catch(error => {
       console.log(error)
       res.status(500).json({error: 'internal error'})
