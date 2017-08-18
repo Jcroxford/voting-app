@@ -17,7 +17,6 @@ const requireSignin = passport.authenticate('local', { session: false })
     8) get all/group of polls route
     9) get detailed single poll route
     11) handle errors better
-    17) add restrictions to password(length certain characters needed etc)
     19)
 */
 
@@ -130,6 +129,43 @@ router.post('/api/create/poll', requireAuth, (req, res) => {
     })
     .then(() => res.json({success: 'poll created successfully'}))
     .catch(error => console.log(error))
+})
+
+// *** public routes ***
+router.get('/api/polls/:page', (req, res) => {
+  Promise.all([
+    models.Polls.count(),
+
+    models.Polls
+      .findAll({
+        limit: 12,
+        offset: (req.params.page - 1) * 12,
+        attributes: ['id', 'title']
+      })
+  ])
+    .then(results => {
+      res.json({
+        totalPolls: results[0],
+        polls: results[1]
+      })
+    })
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({error: 'internal error'})
+    })
+})
+
+router.get('/api/polls/detail/:pollId', (req, res) => {
+  models.PollOptions
+    .findAll({
+      where: {PollId: req.params.pollId},
+      attributes: ['id', 'pollText', 'voteCount']
+    })
+    .then(pollOptions => res.json({pollOptions}))
+    .catch(error => {
+      console.log(error)
+      res.status(500).json({error: 'internal error'})
+    })
 })
 
 module.exports = router
