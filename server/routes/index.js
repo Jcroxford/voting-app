@@ -5,15 +5,17 @@ const router = express.Router()
 
 const models = require('../models/index')
 
+const passportService = require('../services/passport')
+const passport = require('passport')
+
+const requireAuth = passport.authenticate('jwt', { session: false })
 /* general things left to do for routes
     1) delete poll route (must be authenticated)
     5) user authenticated route to view their existing polls
-    7) accept vote route(public)
+    7) accept vote route(public) figure out how to prevent a user for voting on one poll more than once ip?
     8) get all/group of polls route
     9) get detailed single poll route
-    10) get detailed single poll route as an authenticated user? (maybe not needed)
     11) handle errors better
-    15) add a real hidden secret key for jwt generation and authentication
     16) make code more dry with controller functions?
     17) add restrictions to password(length certain characters needed etc)
     18) refactor to use passport
@@ -21,16 +23,20 @@ const models = require('../models/index')
 
 // *** helper functions ***
 function generateJwtForUser (user) {
-  // console.error('user', user)
   return jwt.sign({sub: user.id}, process.env.secret)
 }
+
+// FIXME: temporary route for passport testing
+router.get('/test/passport', requireAuth, (req, res) => {
+  res.send(`authenticated! \n ${JSON.stringify(req.user)}`)
+})
 
 // *** User routes ***
 router.post('/api/create/user', (req, res) => {
   const {username, email, password} = req.body
 
   // validate body info
-  if (!username || !email || !password) return res.json({error: 'invalid input'})
+  if (!username || !email || !password) { return res.json({error: 'invalid input'}) }
 
   models.Users
     .findAll({
