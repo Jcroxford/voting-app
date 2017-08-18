@@ -10,7 +10,6 @@ const models = require('../models/index')
 const localOptions = { usernameField: 'email' }
 
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
-
   let user
   models.Users
     .findAll({
