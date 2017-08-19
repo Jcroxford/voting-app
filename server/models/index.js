@@ -4,11 +4,15 @@ const Sequelize = require('sequelize')
 require('../config/config')
 
 const {database, dbUsername, dbPassword, dialect} = process.env
-
+console.log(process.env.environment);
+console.log(process.env.database);
 let sequelize
 if (process.env.environment === 'development' || process.env.environment === 'test') {
+  const logging = process.env.environment === 'test' ? false : true
+
   sequelize = new Sequelize(database, dbUsername, dbPassword, {
     dialect,
+    logging,
     pool: {
       max: 9,
       min: 0,
