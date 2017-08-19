@@ -9,7 +9,6 @@ This is a basic Node, Express, and PostgreSQL app built to fulfill the [FreeCode
 5. As an authenticated user, I can create a poll with any number of possible items.
 6. As an unauthenticated or authenticated user, I can see and vote on everyone's polls.
 7. As an unauthenticated or authenticated user, I can see the results of polls in chart form. (This could be implemented using Chart.js or Google Charts.)
-8. As an authenticated user, if I don't like the options on a poll, I can create a new option.
 
 ## How to Use
 more info will be provided as development progress
@@ -38,14 +37,11 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * get a favicon
 * figure out how to use debug npm module
 * public and views folders are not currently in use. Remove if we end up never needing them
+* learn about how to implement session storage and use it in this app as a means to keep track of polls that a user has voted on.
 
 
-## Limitations to Consider
-* user should only be able to vote on a poll once(check and store ip address?)
-* create understandable error messages for db tables when invalid input is given
-* handle error for multiple sign up attempts from the same email(find or create?)
-* setup password reset
-* add shareing to social media? (twitter, facebook maybe prepoulate stuff)
-* passport authentication for github? twitter?
-* paginate all votes view
-* add ability for authenticated user to add poll options to existing poll? maybe maybe not? if not remove from user story.
+## Limitations/implementations to Consider
+* user should only be able to vote on a poll once(check and store ip address?) (look into session storage to accomplish this probably) [disussion](https://forum.freecodecamp.org/t/voting-app-preventing-non-logged-in-users-from-voting-twice/35489/2)
+* add sharing to social media? (twitter, facebook maybe prepoulate stuff)
+* passport authentication for github? twitter? 
+* implement real time chart updating?
