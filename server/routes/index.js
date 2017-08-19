@@ -43,15 +43,11 @@ router.post('/api/create/user', (req, res) => {
     .then(user => {
       if (user) throw new Error('username or email in use')
 
-      return bcrypt.genSalt(10)
-    })
-    .then(salt => bcrypt.hash(password, salt))
-    .then(hashedPassword => {
       return models.Users
         .create({
           username,
           email,
-          password: hashedPassword
+          password
         })
     })
     .then(user => res.json({ token: generateJwtForUser(user) }))
