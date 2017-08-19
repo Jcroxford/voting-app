@@ -11,11 +11,10 @@ const passport = require('passport')
 const requireAuth = passport.authenticate('jwt', { session: false })
 const requireSignin = passport.authenticate('local', { session: false })
 /* general things left to do for routes
-    1) delete poll route (must be authenticated)
-    7) accept vote route(public) figure out how to prevent a user for voting on one poll more than once ip?
     19) refactor appropriate findAll's to use findById 
     20) use find and count all
-    21) use findOrCreate http://docs.sequelizejs.com/manual/tutorial/models-usage.html (for 20 and 21)
+    21) use findOrCreate 
+      http://docs.sequelizejs.com/manual/tutorial/models-usage.html (for 20 and 21)
     22) 
 */
 
@@ -153,7 +152,7 @@ router.get('/api/user/poll/delete/:pollId', requireAuth, (req, res) => {
       }
     })
     .then(polls => {
-      if (!polls.length) { 
+      if (!polls.length) {
         throw new Error('insufficient access to poll or poll does not exist')
       }
 
@@ -206,6 +205,28 @@ router.get('/api/polls/detail/:pollId', (req, res) => {
     .catch(error => {
       console.log(error)
       res.status(500).json({error: 'internal error'})
+    })
+})
+
+router.get('/api/poll/vote/:pollOptionId', (req, res) => {
+  models.PollOptions
+    .increment('voteCount', { where: { id: req.params.pollOptionId } })
+    .then(results => {
+      // wtf sequelize? why you have so many nested arrays?
+      if (!results[0][0].length) { throw new Error('poll option does not exist') }
+
+      const updatedPollOption = results[0][0][0]
+      res.json({ updatedVoteCount: updatedPollOption.voteCount })
+    })
+    .catch(error => {
+      switch (error.message) {
+        case 'poll option does not exist':
+          res.status(400).json({ error: error.message })
+          break
+        default:
+          console.log(error)
+          res.status(500).json({ error: 'internal error' })
+      }
     })
 })
 
