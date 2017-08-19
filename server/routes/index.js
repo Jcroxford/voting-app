@@ -10,12 +10,6 @@ const passport = require('passport')
 
 const requireAuth = passport.authenticate('jwt', { session: false })
 const requireSignin = passport.authenticate('local', { session: false })
-/* general things left to do for routes
-    19) refactor appropriate findAll's to use findById 
-    21) use findOrCreate 
-      http://docs.sequelizejs.com/manual/tutorial/models-usage.html (for 20 and 21)
-    22) 
-*/
 
 // *** helper functions ***
 function generateJwtForUser (user) {

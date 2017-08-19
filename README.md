@@ -63,3 +63,4 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * add sharing to social media? (twitter, facebook maybe prepoulate stuff)
 * passport authentication for github? twitter? 
 * implement real time chart updating?
+* should duplicate poll's be prevented? not entirely conviced it's bad
