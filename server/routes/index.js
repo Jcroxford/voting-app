@@ -12,7 +12,6 @@ const requireAuth = passport.authenticate('jwt', { session: false })
 const requireSignin = passport.authenticate('local', { session: false })
 /* general things left to do for routes
     19) refactor appropriate findAll's to use findById 
-    20) use find and count all
     21) use findOrCreate 
       http://docs.sequelizejs.com/manual/tutorial/models-usage.html (for 20 and 21)
     22) 
@@ -31,7 +30,7 @@ router.post('/api/create/user', (req, res) => {
   if (!username || !email || !password) { return res.json({ error: 'invalid input' }) }
 
   models.Users
-    .findAll({
+    .findOne({
       where: {
         $or: [
           {
@@ -47,8 +46,8 @@ router.post('/api/create/user', (req, res) => {
         ]
       }
     })
-    .then(users => {
-      if (users.length) throw new Error('username or email in use')
+    .then(user => {
+      if (user) throw new Error('username or email in use')
 
       return bcrypt.genSalt(10)
     })
@@ -144,19 +143,18 @@ router.get('/api/user/polls', requireAuth, (req, res) => {
 
 router.get('/api/user/poll/delete/:pollId', requireAuth, (req, res) => {
   models.Polls
-    .findAll({
-      limit: 1,
+    .findOne({
       where: {
         id: req.params.pollId,
         UserId: req.user.id
       }
     })
-    .then(polls => {
-      if (!polls.length) {
+    .then(poll => {
+      if (!poll) {
         throw new Error('insufficient access to poll or poll does not exist')
       }
 
-      return polls[0].destroy()
+      return poll.destroy()
     })
     .then(() => res.json({ success: 'poll deleted successfully' }))
     .catch(error => {
@@ -173,20 +171,16 @@ router.get('/api/user/poll/delete/:pollId', requireAuth, (req, res) => {
 
 // *** public routes ***
 router.get('/api/polls/:page', (req, res) => {
-  Promise.all([
-    models.Polls.count(),
-
-    models.Polls
-      .findAll({
-        limit: 12,
-        offset: (req.params.page - 1) * 12,
-        attributes: ['id', 'title']
-      })
-  ])
+  models.Polls
+    .findAndCountAll({
+      limit: 12,
+      offset: (req.params.page - 1) * 12,
+      attributes: ['id', 'title']
+    })
     .then(results => {
       res.json({
-        totalPolls: results[0],
-        polls: results[1]
+        totalPolls: results.count,
+        polls: results.rows
       })
     })
     .catch(error => {
