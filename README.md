@@ -17,16 +17,34 @@ more info will be provided as development progress
 A config.json file must be provided in order for this project to run locally. 
 
 The config file must contain the following variables for both tseting and development
-* port: the port you wish to use to host the app locally
+* **port** the port you wish to use to host the app locally
+* **environment** value of current environment(dev, test, prod)
+* **database** the name of the database you are using for the config
+* **dbUsername** username of local admin of your pg database
+* **dbPassword** password for *dbUsername* mentioned above
+* **dialect** database being used in testing(this should be postgreSQL)
+* **secret** secret used for generating jwt tokens
 
 **Example config**
 ```json
 {
   "test": {
-    "port": 3000
+    "port": 3000,
+    "environment": "test",
+    "database": "voting-app-test",
+    "dbUsername": "root",
+    "dbPassword": "root",
+    "dialect": "postgres",
+    "secret": "some secret value"
   },
   "development": {
-    "port": 3000
+    "port": 3000,
+    "environment": "development",
+    "database": "voting-app-dev",
+    "dbUsername": "root",
+    "dbPassword": "root",
+    "dialect": "postgres",
+    "secret": "some secret value"
   }
 }
 ```
