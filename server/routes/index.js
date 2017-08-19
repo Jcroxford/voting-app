@@ -13,8 +13,10 @@ const requireSignin = passport.authenticate('local', { session: false })
 /* general things left to do for routes
     1) delete poll route (must be authenticated)
     7) accept vote route(public) figure out how to prevent a user for voting on one poll more than once ip?
-    11) handle errors better
-    19)
+    19) refactor appropriate findAll's to use findById 
+    20) use find and count all
+    21) use findOrCreate http://docs.sequelizejs.com/manual/tutorial/models-usage.html (for 20 and 21)
+    22) 
 */
 
 // *** helper functions ***
@@ -138,6 +140,35 @@ router.get('/api/user/polls', requireAuth, (req, res) => {
     .catch(error => {
       console.log(error)
       res.status(500).json({ error: 'internal error' })
+    })
+})
+
+router.get('/api/user/poll/delete/:pollId', requireAuth, (req, res) => {
+  models.Polls
+    .findAll({
+      limit: 1,
+      where: {
+        id: req.params.pollId,
+        UserId: req.user.id
+      }
+    })
+    .then(polls => {
+      if (!polls.length) { 
+        throw new Error('insufficient access to poll or poll does not exist')
+      }
+
+      return polls[0].destroy()
+    })
+    .then(() => res.json({ success: 'poll deleted successfully' }))
+    .catch(error => {
+      switch (error.message) {
+        case 'insufficient access to poll or poll does not exist':
+          res.status(401).json({ error: error.message })
+          break
+        default:
+          console.log(error)
+          res.status(500).json({ error: 'internal error' })
+      }
     })
 })
 

@@ -28,7 +28,7 @@ db.PollOptions = require('./PollOptions')(sequelize, Sequelize)
 
 db.Polls.belongsTo(db.Users)
 db.Users.hasMany(db.Polls)
-db.PollOptions.belongsTo(db.Polls)
+db.PollOptions.belongsTo(db.Polls, { onDelete: 'CASCADE' })
 db.Polls.hasMany(db.PollOptions)
 
 module.exports = db
