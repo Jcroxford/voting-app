@@ -21,7 +21,7 @@ router.post('/api/create/user', (req, res) => {
   const {username, email, password} = req.body
 
   // validate body info
-  if (!username || !email || !password) { return res.json({ error: 'invalid input' }) }
+  if (!username || !email || !password) { return res.status(400).json({ error: 'invalid input' }) }
 
   models.Users
     .findOne({
@@ -69,10 +69,10 @@ router.post('/api/user/login', requireSignin, (req, res) => {
 })
 
 router.post('/api/user/password/change', requireAuth, (req, res) => {
-  const {currentPassword, newPassword} = req.body
+  const {passwordAttempt, newPassword} = req.body
 
   // // verify user and password
-  bcrypt.compare(currentPassword, req.user.password)
+  bcrypt.compare(passwordAttempt, req.user.password)
     .then(passwordMatched => {
       if (!passwordMatched) throw new Error('password incorrect')
 
