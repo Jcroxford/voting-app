@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       hooks: {
         beforeCreate (user, options, cb) {
           const password = user.password
-          console.log('before validate function fired')
+
           return new Promise((resolve, reject) => {
             bcrypt.genSalt(10)
               .then(salt => bcrypt.hash(password, salt))

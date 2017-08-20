@@ -20,6 +20,7 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
       if (!users.length) { return done(null, false) }
 
       user = users[0]
+
       return bcrypt.compare(password, user.password)
     })
     .then(passwordMatched => passwordMatched ? done(null, user) : done(null, false))
