@@ -1,10 +1,10 @@
 const bcrypt = require('bcryptjs')
 const express = require('express')
-const jwt = require('jsonwebtoken')
 const router = express.Router()
 
 const models = require('../models/index')
 
+// *** authentication middleware ***
 const passportService = require('../services/passport') // used automagically by passport
 const passport = require('passport')
 
@@ -12,9 +12,7 @@ const requireAuth = passport.authenticate('jwt', { session: false })
 const requireSignin = passport.authenticate('local', { session: false })
 
 // *** helper functions ***
-function generateJwtForUser (user) {
-  return jwt.sign({sub: user.id}, process.env.secret)
-}
+const { generateJwtForUser } = require('../utils/jwtUtils.js')
 
 // *** User routes ***
 router.post('/api/create/user', (req, res) => {
