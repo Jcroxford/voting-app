@@ -1,17 +1,16 @@
 const models = require('../../models')
-
-const unhashedPassword = ['superSecure', 'evenMoreSuperSecure']
+const { generateJwtForUser } = require('../../utils/jwtUtils')
 
 const users = [
   {
     username: 'jesse',
     email: 'jesse@test.com',
-    password: unhashedPassword[0]
+    password: 'superSecure'
   },
   {
     username: 'sam',
     email: 'sam@test.com',
-    password: unhashedPassword[1]
+    password: 'evenMoreSuperSecure'
   }
 ]
 
