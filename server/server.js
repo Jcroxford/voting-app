@@ -13,10 +13,11 @@ require('./config/config')
 // environment variables
 const app = express()
 const port = process.env.port
+const testing = process.env.NODE_ENV === 'test'
 
 // middleware
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
-app.use(logger('dev'))
+if (!testing) { app.use(logger('dev')) } // prevent logging during mocha testing
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
@@ -33,7 +34,12 @@ const models = require('./models/index')
 models.sequelize
   .sync()
   .then(() => {
-    app.listen(port, () => console.log(`server listening on http://localhost:${port}`))
+    app.listen(port, () => {
+      // prevent start message during testing
+      if (!testing) {
+        console.log(`server listening on http://localhost:${port}`)
+      }
+    })
   })
   .catch(error => console.log(error))
 
