@@ -56,7 +56,9 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * figure out how to use debug npm module
 * public and views folders are not currently in use. Remove if we end up never needing them
 * learn about how to implement session storage and use it in this app as a means to keep track of polls that a user has voted on.
-
+* update routes to follow a more traditional rest api design? (if done, update tests, routes, & docs with the new routes)
+* add helment.js to app to secure all the things
+* refactor routes/index and models/Users so that Users model contains more of the logic?
 
 ## Limitations/implementations to Consider
 * user should only be able to vote on a poll once(check and store ip address?) (look into session storage to accomplish this probably) [disussion](https://forum.freecodecamp.org/t/voting-app-preventing-non-logged-in-users-from-voting-twice/35489/2)
@@ -64,3 +66,8 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * passport authentication for github? twitter? 
 * implement real time chart updating?
 * should duplicate poll's be prevented? not entirely conviced it's bad
+* change login to signin across app.
+* change create user to signup accross app
+* executive decision has been made that until opinions changed, password strength/requirements will only be assessed on the client side
+* I am starting /api/polls & /api/user/polls routes with pagination but considering trying to use lazy loading to make a more fluid
+* refactor create user route /api/create/user
