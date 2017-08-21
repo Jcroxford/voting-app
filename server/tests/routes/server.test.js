@@ -202,7 +202,6 @@ describe('user/authenticated routes', () => {
   })
 
   describe('/api/user/polls', () => {
-
     beforeEach(populatePolls)
 
     it('should return unathenticated if authorization header is not present or is invalid', (done) => {
@@ -231,7 +230,6 @@ describe('user/authenticated routes', () => {
 
 describe('global/public routes', () => {
   describe('/api/polls/:page', () => {
-
     beforeEach(populatePolls)
 
     it('should return a valid response (json with totalPolls count and array of polls)', (done) => {
@@ -257,7 +255,6 @@ describe('global/public routes', () => {
   })
 
   describe('/api/polls/detail/:pollId', () => {
-
     beforeEach(populatePolls)
 
     let pollId
@@ -280,6 +277,41 @@ describe('global/public routes', () => {
             expect(pollOption).to.have.all.keys(['id', 'pollText', 'voteCount'])
           }
         })
+        .end(done)
+    })
+
+    afterEach(destroyPolls)
+  })
+
+  describe('/api/poll/vote/:pollOptionId', () => {
+    beforeEach(populatePolls)
+
+    let pollOptionId
+    beforeEach((done) => {
+      models.PollOptions
+        .findOne({ where: { pollText: polls[0].options[0].pollText } })
+        .then(pollOption => {
+          console.log(pollOption);
+          pollOptionId = pollOption.id
+          done()
+        })
+        .catch(error => done(error))
+    })
+
+    it('should return error if given an invalid poll option id', (done) => {
+      pollOptionId = 0
+      request(app)
+        .get(`/api/poll/vote/${pollOptionId}`)
+        .expect(400)
+        .expect(res => expect(res.body).to.include({ error: 'poll option does not exist' }))
+        .end(done)
+    })
+
+    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
+      request(app)
+        .get(`/api/poll/vote/${pollOptionId}`)
+        .expect(200)
+        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
         .end(done)
     })
 
