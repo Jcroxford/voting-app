@@ -2,7 +2,7 @@ const request = require('supertest')
 const expect = require('chai').expect
 
 const { app } = require('../../server')
-const { users, populateUsers } = require('../seed/seed')
+const { users, populateUsers, populatePolls, destroyPolls } = require('../seed/seed')
 
 const models = require('../../models')
 const { generateJwtForUser } = require('../../utils/jwtUtils')
@@ -192,4 +192,31 @@ describe('/api/create/poll', () => {
       .expect(res => expect(res.body).to.include({ success: 'poll created successfully' }))
       .end(done)
   })
+})
+
+describe('/api/polls/:page', () => {
+
+  beforeEach(populatePolls)
+
+  it('should return a valid response (json with totalPolls count and array of polls)', (done) => {
+    // does not have authorization header attached
+    request(app)
+      .get('/api/polls/1')
+      .expect(200)
+      .expect(res => expect(res.body).to.have.all.keys(['totalPolls', 'polls']))
+      .end(done)
+  })
+
+  it('should return valid count but an empty polls array if page count is to high', (done) => {
+    request(app)
+      .get('/api/polls/500')
+      .expect(200)
+      .expect(res => {
+        expect(res.body).to.have.all.keys(['totalPolls', 'polls'])
+        expect(res.body.polls).to.be.empty
+      })
+      .end(done)
+  })
+
+  afterEach(destroyPolls)
 })
