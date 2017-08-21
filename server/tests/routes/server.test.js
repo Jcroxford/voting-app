@@ -60,9 +60,51 @@ describe('/api/create/user', () => {
       .post('/api/create/user')
       .send(user)
       .expect(200)
-      .expect(res => {
-        expect(res.body).to.have.all.keys('token')
-      })
+      .expect(res => expect(res.body).to.have.all.keys('token'))
+      .end(done)
+  })
+})
+
+describe('/api/user/login', () => {
+  it('should return error if given invalid email', (done) => {
+    const user = {
+      email: 'invalid email',
+      password: 'root'
+    }
+
+    request(app)
+      .post('/api/user/login')
+      .send(user)
+      .expect(401)
+      .expect(res => expect(res.unauthorized).to.be.true)
+      .end(done)
+  })
+
+  it('should return error if given valid username or email and invalid password', (done) => {
+    const user = {
+      email: users[0].email,
+      password: 'invalid password'
+    }
+
+    request(app)
+      .post('/api/user/login')
+      .send(user)
+      .expect(401)
+      .expect(res => expect(res.unauthorized).to.be.true)
+      .end(done)
+  })
+
+  it('should authenticate and return a jwt and json response with username', (done) => {
+    const user = {
+      email: users[0].email,
+      password: users[0].password
+    }
+    
+    request(app)
+      .post('/api/user/login')
+      .send(user)
+      .expect(200)
+      .expect(res => expect(res.body).to.have.all.keys('token'))
       .end(done)
   })
 })
@@ -99,9 +141,7 @@ describe('/api/create/poll', () => {
       .set('authorization', token)
       .send(poll)
       .expect(200)
-      .expect(res => {
-        expect(res.body).to.include({ success: 'poll created successfully' })
-      })
+      .expect(res => expect(res.body).to.include({ success: 'poll created successfully' }))
       .end(done)
   })
 })
