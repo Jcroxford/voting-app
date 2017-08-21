@@ -15,20 +15,20 @@ const { generateJwtForUser } = require('../../utils/jwtUtils')
 
 beforeEach(populateUsers)
 
-// as of this writing, I could not figure out a way to generate variables dynamically and cleanly
-// inside of seed.js so I chose to write the callbacks for these hooks inside of this file instead
-let token
-beforeEach((done) => {
-  models.Users
-    .findOne({ where: { email: users[0].email } })
-    .then(user => {
-      token = generateJwtForUser(user)
-      done()
-    })
-    .catch(error => done(error))
-})
-
 describe('user/authenticated routes', () => {
+  // as of this writing, I could not figure out a way to generate variables dynamically and cleanly
+  // inside of seed.js so I chose to write the callbacks for these hooks inside of this file instead
+  let token
+  beforeEach((done) => {
+    models.Users
+      .findOne({ where: { email: users[0].email } })
+      .then(user => {
+        token = generateJwtForUser(user)
+        done()
+      })
+      .catch(error => done(error))
+  })
+
   describe('/api/create/user', () => {
     it('should return error when not given the correct parameters (username, email, password)', (done) => {
       const user = {
@@ -226,6 +226,53 @@ describe('user/authenticated routes', () => {
 
     afterEach(destroyPolls)
   })
+
+  describe('/api/user/poll/delete/:pollId', () => {
+    beforeEach(populatePolls)
+
+    let pollOptionId
+    beforeEach((done) => {
+      models.PollOptions
+        .findOne({ where: { pollText: polls[0].options[0].pollText } })
+        .then(pollOption => {
+          pollOptionId = pollOption.id
+          done()
+        })
+        .catch(error => done(error))
+    })
+
+    it('should return error if not given a proper jwt authorization', (done) => {
+      request(app)
+        .get(`/api/user/poll/delete/${pollOptionId}`)
+        .set('authorization', `fake${token}`)
+        .expect(401)
+        .expect(res => expect(res.unauthorized).to.be.true)
+        .end(done)
+    })
+
+    it('should return error if attempting to delete a poll that the user does not own or does not exist', (done) => {
+      pollOptionId = 0
+
+      request(app)
+        .get(`/api/user/poll/delete/${pollOptionId}`)
+        .set('authorization', token)
+        .expect(401)
+        .expect(res => expect(res.body).to.include({ error: 'insufficient access to poll or poll does not exist' }))
+        .end(done)
+    })
+
+    // it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
+    //   request(app)
+    //     .get(`/api/poll/vote/${pollOptionId}`)
+    //     .expect(200)
+    //     .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
+    //     .end(done)
+    // })
+
+    afterEach(destroyPolls)
+  })
+// should return success value if user is authorized and attempts to delete one of their own polls
+
 })
 
 describe('global/public routes', () => {
@@ -291,7 +338,6 @@ describe('global/public routes', () => {
       models.PollOptions
         .findOne({ where: { pollText: polls[0].options[0].pollText } })
         .then(pollOption => {
-          console.log(pollOption);
           pollOptionId = pollOption.id
           done()
         })
@@ -300,6 +346,7 @@ describe('global/public routes', () => {
 
     it('should return error if given an invalid poll option id', (done) => {
       pollOptionId = 0
+
       request(app)
         .get(`/api/poll/vote/${pollOptionId}`)
         .expect(400)
