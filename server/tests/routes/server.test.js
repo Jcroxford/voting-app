@@ -109,6 +109,54 @@ describe('/api/user/login', () => {
   })
 })
 
+describe('/api/user/password/change', () => {
+  it('should return error if given invalid jwt', (done) => {
+    const invalidToken = 'not a valid token'
+    const changeAttempt = {
+      passwordAttempt: users[0],
+      newPassword: users[0]
+    }
+
+    request(app)
+      .post('/api/user/password/change')
+      .set('authorization', invalidToken)
+      .send(changeAttempt)
+      .expect(401)
+      .expect(res => expect(res.unauthorized).to.be.true)
+      .end(done)
+  })
+
+  it('should return error if not given valid current password', (done) => {
+    const changeAttempt = {
+      passwordAttempt: 'not the correct password',
+      newPassword: users[0]
+    }
+
+    request(app)
+      .post('/api/user/password/change')
+      .set('authorization', token)
+      .send(changeAttempt)
+      .expect(400)
+      .expect(res => expect(res.body).to.include({ error: 'password incorrect' }))
+      .end(done)
+  })
+
+  it('should return success value if password was changed successfully', (done) => {
+    const changeAttempt = {
+      passwordAttempt: users[0].password,
+      newPassword: 'aNewP4$$w0rD'
+    }
+
+    request(app)
+      .post('/api/user/password/change')
+      .set('authorization', token)
+      .send(changeAttempt)
+      .expect(200)
+      .expect(res => expect(res.body).to.include({ success: 'password updated successfully' }))
+      .end(done)
+  })
+})
+
 describe('/api/create/poll', () => {
   const poll = {
     title: 'greek?',
