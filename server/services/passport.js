@@ -10,20 +10,19 @@ const models = require('../models/index')
 const localOptions = { usernameField: 'email' }
 
 const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
-  let user
+  let persistantUser
   models.Users
-    .findAll({
-      limit: 1,
+    .findOne({
       where: { email }
     })
-    .then(users => {
-      if (!users.length) { return done(null, false) }
+    .then(user => {
+      if (!user) { return done(null, false) }
 
-      user = users[0]
+      persistantUser = user
 
       return bcrypt.compare(password, user.password)
     })
-    .then(passwordMatched => passwordMatched ? done(null, user) : done(null, false))
+    .then(passwordMatched => passwordMatched ? done(null, persistantUser) : done(null, false))
     .catch(error => done(error, false))
 })
 
@@ -36,14 +35,13 @@ const jwtOptions = {
 // payload == decoded jwt doken (if it exists)
 const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
   models.Users
-    .findAll({
-      limit: 1,
+    .findOne({
       where: { id: payload.sub }
     })
-    .then(users => {
-      if (!users.length) { return done(null, false) }
+    .then(user => {
+      if (!user) { return done(null, false) }
 
-      return done(null, users[0])
+      return done(null, user)
     })
     .catch(error => done(error, null))
 })
