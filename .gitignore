@@ -1,8 +1,11 @@
 // npm
 node_modules
+package-lock.json
 
 // dev tools
 server/config/config.json
 
 // editior settings
 .vscode
+.eslintrc.json
+3.0.0
