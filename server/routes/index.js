@@ -9,13 +9,13 @@ const passportService = require('../services/passport') // used automagically by
 const passport = require('passport')
 
 const requireAuth = passport.authenticate('jwt', { session: false })
-const requireSignin = passport.authenticate('local', { session: false })
+const requireLogin = passport.authenticate('local', { session: false })
 
 // *** helper functions ***
 const { generateJwtForUser } = require('../utils/jwtUtils.js')
 
 // *** User routes ***
-router.post('/api/create/user', (req, res) => {
+router.post('/api/signup', (req, res) => {
   const {username, email, password} = req.body
 
   // validate body info
@@ -62,7 +62,7 @@ router.post('/api/create/user', (req, res) => {
     })
 })
 
-router.post('/api/user/login', requireSignin, (req, res) => {
+router.post('/api/signin', requireLogin, (req, res) => {
   res.json({ token: generateJwtForUser(req.user) })
 })
 
@@ -101,7 +101,7 @@ router.post('/api/user/password/change', requireAuth, (req, res) => {
     })
 })
 
-router.post('/api/create/poll', requireAuth, (req, res) => {
+router.post('/api/user/createPoll', requireAuth, (req, res) => {
   // verify user and insert
   models.Polls
     .create({

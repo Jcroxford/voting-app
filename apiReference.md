@@ -1,6 +1,6 @@
 ## DB API Reference
 
-### POST /api/create/user
+### POST /api/signup
 This route requires 3 paramaters. `username`, `email`, and `password` all three should be a string. If the username or email given have already been used, the route will return a 400 error.
 
 **format for request**
@@ -12,7 +12,7 @@ This route requires 3 paramaters. `username`, `email`, and `password` all three 
 }
 ```
 
-### POST /api/create/poll
+### POST /api/user/createPoll
 This route requires a jwt header attatched to the request. It requres 2 parameters. `title` is the title of the poll you wish to create. `options` is an array of options to be assigned to the poll. each item in the `options` array is an object that contains a key `pollText` which contains the title of the given poll option. Both poll `title` and `pollText` are limited to 255 characters.
 
 **format for request**
@@ -49,7 +49,7 @@ http://localhost:3000/api/poll/delete/:pollId
 }
 ```
 
-### POST /api/user/login
+### POST /api/signin
 This route is used for user login and requires 2 parameters. A `username` OR `email` and a `password`. The database will be searched using both username and email and if found, will attempt to authenticate the user based on their password. 
 
 **formats for request**

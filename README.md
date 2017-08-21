@@ -66,8 +66,6 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * passport authentication for github? twitter? 
 * implement real time chart updating?
 * should duplicate poll's be prevented? not entirely conviced it's bad
-* change login to signin across app.
 * change create user to signup accross app
 * executive decision has been made that until opinions changed, password strength/requirements will only be assessed on the client side
 * I am starting /api/polls & /api/user/polls routes with pagination but considering trying to use lazy loading to make a more fluid
-* refactor create user route /api/create/user

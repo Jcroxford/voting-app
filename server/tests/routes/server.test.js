@@ -29,7 +29,7 @@ describe('user/authenticated routes', () => {
       .catch(error => done(error))
   })
 
-  describe('/api/create/user', () => {
+  describe('/api/signup', () => {
     it('should return error when not given the correct parameters (username, email, password)', (done) => {
       const user = {
         // leaves out username for this test to qualify as invalid user
@@ -38,7 +38,7 @@ describe('user/authenticated routes', () => {
       }
 
       request(app)
-        .post('/api/create/user')
+        .post('/api/signup')
         .send(user)
         .expect(400)
         .expect(res => expect(res.body).to.include({error: 'invalid input'}))
@@ -49,7 +49,7 @@ describe('user/authenticated routes', () => {
       const user = users[0]
 
       request(app)
-        .post('/api/create/user')
+        .post('/api/signup')
         .send(user)
         .expect(400)
         .expect(res => expect(res.body).to.include({error: 'username or email in use'}))
@@ -64,7 +64,7 @@ describe('user/authenticated routes', () => {
       }
 
       request(app)
-        .post('/api/create/user')
+        .post('/api/signup')
         .send(user)
         .expect(200)
         .expect(res => expect(res.body).to.have.all.keys('token'))
@@ -72,7 +72,7 @@ describe('user/authenticated routes', () => {
     })
   })
 
-  describe('/api/user/login', () => {
+  describe('/api/signin', () => {
     it('should return error if given invalid email', (done) => {
       const user = {
         email: 'invalid email',
@@ -80,7 +80,7 @@ describe('user/authenticated routes', () => {
       }
 
       request(app)
-        .post('/api/user/login')
+        .post('/api/signin')
         .send(user)
         .expect(401)
         .expect(res => expect(res.unauthorized).to.be.true)
@@ -94,7 +94,7 @@ describe('user/authenticated routes', () => {
       }
 
       request(app)
-        .post('/api/user/login')
+        .post('/api/signin')
         .send(user)
         .expect(401)
         .expect(res => expect(res.unauthorized).to.be.true)
@@ -108,7 +108,7 @@ describe('user/authenticated routes', () => {
       }
       
       request(app)
-        .post('/api/user/login')
+        .post('/api/signin')
         .send(user)
         .expect(200)
         .expect(res => expect(res.body).to.have.all.keys('token'))
@@ -164,7 +164,7 @@ describe('user/authenticated routes', () => {
     })
   })
 
-  describe('/api/create/poll', () => {
+  describe('/api/user/createPoll', () => {
     const poll = {
       title: 'greek?',
       options: [
@@ -183,7 +183,7 @@ describe('user/authenticated routes', () => {
     it('should return error if route is not authenticated', (done) => {
       // does not have authorization header attached
       request(app)
-        .post('/api/create/poll')
+        .post('/api/user/createPoll')
         .send(poll)
         .expect(401)
         .expect(res => expect(res.unauthorized).to.be.true)
@@ -192,7 +192,7 @@ describe('user/authenticated routes', () => {
 
     it('should create a poll if given a valid jwt', (done) => {
       request(app)
-        .post('/api/create/poll')
+        .post('/api/user/createPoll')
         .set('authorization', token)
         .send(poll)
         .expect(200)
