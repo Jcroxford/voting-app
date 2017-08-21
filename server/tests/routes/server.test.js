@@ -2,15 +2,21 @@ const request = require('supertest')
 const expect = require('chai').expect
 
 const { app } = require('../../server')
-const { users, populateUsers, populatePolls, destroyPolls } = require('../seed/seed')
+const {
+  users,
+  populateUsers,
+  populatePolls,
+  destroyPolls,
+  polls
+} = require('../seed/seed')
 
 const models = require('../../models')
 const { generateJwtForUser } = require('../../utils/jwtUtils')
 
 beforeEach(populateUsers)
 
-// as of this writing, I could not figure out a way to generate a dynamic token cleanly
-// inside of seed.js so I chose to write the callback inside of this file instead
+// as of this writing, I could not figure out a way to generate variables dynamically and cleanly
+// inside of seed.js so I chose to write the callbacks for these hooks inside of this file instead
 let token
 beforeEach((done) => {
   models.Users
@@ -214,6 +220,37 @@ describe('/api/polls/:page', () => {
       .expect(res => {
         expect(res.body).to.have.all.keys(['totalPolls', 'polls'])
         expect(res.body.polls).to.be.empty
+      })
+      .end(done)
+  })
+
+  afterEach(destroyPolls)
+})
+
+describe('/api/polls/detail/:pollId', () => {
+
+  beforeEach(populatePolls)
+
+  let pollId
+  beforeEach((done) => {
+    models.Polls
+      .findOne({ where: { title: polls[0].title } })
+      .then(poll => {
+        pollId = poll.id
+        done()
+      })
+      .catch(error => done(error))
+  })
+
+  it('should return a json object with a poll\'s poll options and their voteCount', (done) => {
+    // does not have authorization header attached
+    request(app)
+      .get(`/api/polls/detail/${pollId}`)
+      .expect(200)
+      .expect(res => {
+        for (const pollOption of res.body.pollOptions) {
+          expect(pollOption).to.have.all.keys(['id', 'pollText', 'voteCount'])
+        }
       })
       .end(done)
   })
