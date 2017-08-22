@@ -15,6 +15,20 @@ const requireLogin = passport.authenticate('local', { session: false })
 const { generateJwtForUser } = require('../utils/jwtUtils.js')
 
 // *** User routes ***
+router.get('/api/signup/emailIsUsed/:email', (req, res) => {
+  models.Users
+    .findOne({ where: { email: req.params.email } })
+    .then(user => res.json({ used: user ? true : false }))
+    .catch(error => res.status(500).json({ error: 'internal error occured'}))
+})
+
+router.get('/api/signup/usernameIsUsed/:username', (req, res) => {
+  models.Users
+    .findOne({ where: { username: req.params.username } })
+    .then(user => res.json({ used: user ? true : false }))
+    .catch(error => res.status(500).json({ error: 'internal error occured'}))
+})
+
 router.post('/api/signup', (req, res) => {
   const {username, email, password} = req.body
 

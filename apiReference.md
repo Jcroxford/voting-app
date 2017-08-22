@@ -12,6 +12,36 @@ This route requires 3 paramaters. `username`, `email`, and `password` all three 
 }
 ```
 
+### GET /api/signup/emailIsUsed/:email
+This route is a public route. If `email` given is already used, the response will return true, otherwise it will return false.
+
+**formats for request (when running locally)**
+```
+http://localhost:3000/api/signup/emailIsUsed/someEmailThatIsAlreadyUsed
+```
+
+**format of response**
+``` javascript
+{
+    "used": true
+}
+```
+
+### GET /api/signup/usernameIsUsed/:username
+This route is a public route. If `username` given is already used, the response will return true, otherwise it will return false.
+
+**formats for request (when running locally)**
+```
+http://localhost:3000/api/signup/usernameIsUsed/someUsernameThatIsAlreadyUsed
+```
+
+**format of response**
+``` javascript
+{
+    "used": true
+}
+```
+
 ### POST /api/user/createPoll
 This route requires a jwt header attatched to the request. It requres 2 parameters. `title` is the title of the poll you wish to create. `options` is an array of options to be assigned to the poll. each item in the `options` array is an object that contains a key `pollText` which contains the title of the given poll option. Both poll `title` and `pollText` are limited to 255 characters.
 
@@ -173,7 +203,7 @@ http://localhost:3000/api/polls/detail/18
 ```
 
 ### GET /api/poll/vote/:pollOptionId
-This route requires is a public route. If `pollOptionId` given is valid, the pollOption vote tally will be updated in the database and a json will return the updated result as a success value. 
+This route is a public route. If `pollOptionId` given is valid, the pollOption vote tally will be updated in the database and a json will return the updated result as a success value. 
 
 **formats for request (when running locally)**
 ```
