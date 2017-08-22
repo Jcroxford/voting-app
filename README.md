@@ -59,6 +59,7 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * update routes to follow a more traditional rest api design? (if done, update tests, routes, & docs with the new routes)
 * add helment.js to app to secure all the things
 * refactor routes/index and models/Users so that Users model contains more of the logic?
+* add toggle for hidden/visible text during password steps client side
 
 ## Limitations/implementations to Consider
 * user should only be able to vote on a poll once(check and store ip address?) (look into session storage to accomplish this probably) [disussion](https://forum.freecodecamp.org/t/voting-app-preventing-non-logged-in-users-from-voting-twice/35489/2)
