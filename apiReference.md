@@ -12,6 +12,14 @@ This route requires 3 paramaters. `username`, `email`, and `password` all three 
 }
 ```
 
+**format of response**
+``` javascript
+{
+  "token": "some jwt token",
+  "username": "the user's username here"
+}
+```
+
 ### GET /api/signup/emailIsUsed/:email
 This route is a public route. If `email` given is already used, the response will return true, otherwise it will return false.
 
@@ -85,17 +93,17 @@ This route is used for user login and requires 2 parameters. A `username` OR `em
 **formats for request**
 ``` javascript
 {
-  "username": "exampleName",
+  "email": "example@email.com",
   "password": "password123"
 }
 ```
 
+**format of response**
 ``` javascript
 {
-  "email": "example@email.com",
-  "password": "password123"
+  "token": "some jwt token",
+  "username": "the user's username here"
 }
-
 ```
 
 ### POST /api/user/password/change
