@@ -48,7 +48,10 @@ router.post('/api/signup', (req, res) => {
           password
         })
     })
-    .then(user => res.json({ token: generateJwtForUser(user) }))
+    .then(user => res.json({ 
+      token: generateJwtForUser(user), 
+      username: user.username
+    }))
     .catch(error => {
       // custom error handling
       switch (error.message) {
@@ -63,7 +66,10 @@ router.post('/api/signup', (req, res) => {
 })
 
 router.post('/api/signin', requireLogin, (req, res) => {
-  res.json({ token: generateJwtForUser(req.user) })
+  res.json({ 
+    token: generateJwtForUser(req.user),
+    username: req.user.username
+  })
 })
 
 router.post('/api/user/password/change', requireAuth, (req, res) => {
