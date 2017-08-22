@@ -67,7 +67,7 @@ describe('user/authenticated routes', () => {
         .post('/api/signup')
         .send(user)
         .expect(200)
-        .expect(res => expect(res.body).to.have.all.keys('token'))
+        .expect(res => expect(res.body).to.have.all.keys(['token', 'username']))
         .end(done)
     })
   })
@@ -111,7 +111,7 @@ describe('user/authenticated routes', () => {
         .post('/api/signin')
         .send(user)
         .expect(200)
-        .expect(res => expect(res.body).to.have.all.keys('token'))
+        .expect(res => expect(res.body).to.have.all.keys(['token', 'username']))
         .end(done)
     })
   })
@@ -261,13 +261,13 @@ describe('user/authenticated routes', () => {
         .end(done)
     })
 
-    // it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
-    //   request(app)
-    //     .get(`/api/poll/vote/${pollOptionId}`)
-    //     .expect(200)
-    //     .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
-    //     .end(done)
-    // })
+    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
+      request(app)
+        .get(`/api/poll/vote/${pollOptionId}`)
+        .expect(200)
+        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
+        .end(done)
+    })
 
     afterEach(destroyPolls)
   })
@@ -351,14 +351,6 @@ describe('global/public routes', () => {
         .get(`/api/poll/vote/${pollOptionId}`)
         .expect(400)
         .expect(res => expect(res.body).to.include({ error: 'poll option does not exist' }))
-        .end(done)
-    })
-
-    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
-      request(app)
-        .get(`/api/poll/vote/${pollOptionId}`)
-        .expect(200)
-        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
         .end(done)
     })
 
