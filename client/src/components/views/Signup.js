@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
 import axios from 'axios'
+
+import {baseRoute} from '../../utils/api'
 
 class Signup extends Component {
   constructor(props, context) {
@@ -19,7 +21,7 @@ class Signup extends Component {
   }
 
   handleInputChange(e) {
-    this.setState({[e.target.name]: e.target.value})
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   handleSubmit(e) {
@@ -28,10 +30,10 @@ class Signup extends Component {
 
     if(user.state.password !== user.state.confirmPassword) { return console.log('passwords do not match') }
 
-    axios.post('http://localhost:3030/api/signup', {
+    axios.post(`${baseRoute}/api/signup`, {
         username: user.state.username,
         email: user.state.email,
-        password: user.state.password
+        password: user.state.password // FIXME: validate that it conforms to specific params
       })
       .then(response => localStorage.setItem('userData', JSON.stringify(response.data)))
       .then(() => this.props.updateAuth('', true)) // FIXME: updateAuth needs a propType
