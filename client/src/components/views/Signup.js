@@ -1,10 +1,11 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 
 class Signup extends Component {
-  constructor(props) {
-    super(props)
+  constructor(props, context) {
+    super(props, context)
 
     this.state = {
       username: '',
@@ -22,10 +23,9 @@ class Signup extends Component {
   }
 
   handleSubmit(e) {
-    // this.props.updateAuth()
     e.preventDefault()
     const user = this
-console.log(this);
+
     if(user.state.password !== user.state.confirmPassword) { return console.log('passwords do not match') }
 
     axios.post('http://localhost:3030/api/signup', {
@@ -34,8 +34,8 @@ console.log(this);
         password: user.state.password
       })
       .then(response => localStorage.setItem('userData', JSON.stringify(response.data)))
-      // .then(() => this.props.history.push('/'))
       .then(() => this.props.updateAuth('', true)) // FIXME: updateAuth needs a propType
+      .then(() => this.props.history.push('/'))
       .catch(error => this.props.updateAuth('internal error, please wait a minute and try again', false))
   }
 
@@ -60,4 +60,4 @@ console.log(this);
   }
 }
 
-export default Signup
+export default withRouter(Signup)
