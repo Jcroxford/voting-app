@@ -22,11 +22,10 @@ class Signup extends Component {
   }
 
   handleSubmit(e) {
-    this.props.updateAuth()
-
+    // this.props.updateAuth()
     e.preventDefault()
     const user = this
-
+console.log(this);
     if(user.state.password !== user.state.confirmPassword) { return console.log('passwords do not match') }
 
     axios.post('http://localhost:3030/api/signup', {
@@ -34,9 +33,10 @@ class Signup extends Component {
         email: user.state.email,
         password: user.state.password
       })
-      .then(response => console.log(response)) // FIXME:
-      .then(() => {})
-      .catch(error => console.log(error)) // FIXME:
+      .then(response => localStorage.setItem('userData', JSON.stringify(response.data)))
+      // .then(() => this.props.history.push('/'))
+      .then(() => this.props.updateAuth('', true)) // FIXME: updateAuth needs a propType
+      .catch(error => this.props.updateAuth('internal error, please wait a minute and try again', false))
   }
 
   render() {

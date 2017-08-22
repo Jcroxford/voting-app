@@ -24,14 +24,14 @@ class App extends Component {
     this.updateAuth = this.updateAuth.bind(this)
   }
 
-  updateAuth(authenticated, error) {
+  updateAuth(error, authenticated) {
     console.log('update auth called');
-    // if(!error) { error = '' }
+    if(!error) { error = '' }
 
-    // this.setState({
-    //   error,
-    //   authenticated
-    // })
+    this.setState({
+      error,
+      authenticated
+    })
   }
 
   render () {
