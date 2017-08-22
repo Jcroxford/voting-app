@@ -1,35 +1,58 @@
 import React, {Component} from 'react'
+import {withRouter} from 'react-router-dom'
+import axios from 'axios'
 
 class Signup extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
-    // state = {
-    //   username: '',
-    //   email: '',
-    //   password: '',
-    //   confirmPassword: ''
-    // }
+    this.state = {
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
 
-    // this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  handleInputChange(e) {
+    this.setState({[e.target.name]: e.target.value})
+  }
 
+  handleSubmit(e) {
+    this.props.updateAuth()
+
+    e.preventDefault()
+    const user = this
+
+    if(user.state.password !== user.state.confirmPassword) { return console.log('passwords do not match') }
+
+    axios.post('http://localhost:3030/api/signup', {
+        username: user.state.username,
+        email: user.state.email,
+        password: user.state.password
+      })
+      .then(response => console.log(response)) // FIXME:
+      .then(() => {})
+      .catch(error => console.log(error)) // FIXME:
+  }
 
   render() {
     return (
-      <form>
+      <form onSubmit={this.handleSubmit}>
         <label htmlFor="username">Username</label>
-        <input type="text" name="username" />
+        <input type="text" name="username" onChange={this.handleInputChange} />
 <br/>
         <label htmlFor="email">Email</label>
-        <input type="email" name="email" />
+        <input type="email" name="email" onChange={this.handleInputChange} />
 <br/>
         <label htmlFor="password">Password</label>
-        <input type="password" name="password" />
+        <input type="password" name="password" onChange={this.handleInputChange} />
 <br/>
         <label htmlFor="confirmPassword">Confirm Password</label>
-        <input type="password" name="confirmPassword" />
+        <input type="password" name="confirmPassword" onChange={this.handleInputChange} />
 <br/>
         <button>Sign Up</button>
       </form>
