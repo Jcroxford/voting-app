@@ -5,7 +5,6 @@ import Home from './components/views/Home'
 import Signin from './components/views/Signin'
 import Signup from './components/views/Signup'
 import Settings from './components/views/Settings'
-import UserDetail from './components/views/UserDetail'
 import Polls from './components/views/Polls'
 import PollDetail from './components/views/PollDetail'
 import Nav from './components/partials/Nav'
@@ -42,11 +41,10 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route path="/signin" render={props => <Signin updateAuth={this.updateAuth} />} />
-            <Route path="/signup" render={props => <Signup updateAuth={this.updateAuth} />} /> 
-            <Route path="/settings" component={Settings} /> 
-            <Route path="/polls" component={Polls} /> 
-            <Route exact path="/:username" component={UserDetail} /> 
-            <Route path="/:username/:pollId" component={PollDetail} /> 
+            <Route path="/signup" render={props => <Signup updateAuth={this.updateAuth} />} />
+            <Route path="/settings" component={Settings} />
+            <Route path="/polls" component={Polls} />
+            <Route path="/:username/:pollId" component={PollDetail} />
           </Switch>
         </div>
       </Router>
