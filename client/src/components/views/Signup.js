@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 
@@ -36,7 +36,7 @@ class Signup extends Component {
         password: user.state.password // FIXME: validate that it conforms to specific params
       })
       .then(response => localStorage.setItem('userData', JSON.stringify(response.data)))
-      .then(() => this.props.updateAuth('', true)) // FIXME: updateAuth needs a propType
+      .then(() => this.props.updateAuth('', true))
       .then(() => this.props.history.push('/'))
       .catch(error => this.props.updateAuth('internal error, please wait a minute and try again', false))
   }
@@ -60,6 +60,10 @@ class Signup extends Component {
       </form>
     )
   }
+}
+
+Signup.propTypes = {
+  updateAuth: PropTypes.func.isRequired
 }
 
 export default withRouter(Signup)
