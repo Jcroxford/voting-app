@@ -23,8 +23,15 @@ class App extends Component {
     this.updateAuth = this.updateAuth.bind(this)
   }
 
+  componentWillMount() {
+    const userData = JSON.parse(localStorage.getItem('userData'))
+    
+    if(!userData) { return }
+
+    this.setState({ authenticated: true })
+  }
+
   updateAuth(error, authenticated) {
-    console.log('update auth called');
     if(!error) { error = '' }
 
     this.setState({
@@ -39,7 +46,7 @@ class App extends Component {
         <div>
           <Nav />
           <Switch>
-            <Route exact path="/" component={Home} />
+            <Route exact path="/" render={props => <Home authenticated={this.state.authenticated} />} />
             <Route path="/signin" render={props => <Signin updateAuth={this.updateAuth} />} />
             <Route path="/signup" render={props => <Signup updateAuth={this.updateAuth} />} />
             <Route path="/settings" component={Settings} />

@@ -1,26 +1,23 @@
 import React, {Component} from 'react'
 
 class Home extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
-    this.state = {
-      username: '',
-      authorized: false
-    }
+    this.state = { username: '' }
   }
 
   componentWillMount() {
+    if (!this.props.authenticated) { return }
+
     const userData = JSON.parse(localStorage.getItem('userData'))
     
-    if(!userData) { return }
-
-    this.setState({ username: userData.username, authorized: true })
+    this.setState({ username: userData.username })
   }
 
   render() {
     return (
-      this.state.authorized
+      this.props.authenticated
         ? <div>Hello {this.state.username} welcome to the home page!</div>
         : <div>Welcome to the home page</div>
     )
