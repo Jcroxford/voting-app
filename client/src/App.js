@@ -41,8 +41,8 @@ class App extends Component {
           <Nav />
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route path="/signin" component={Signin} />
-            <Route path="/signup" render={(props) => <Signup updateAuth={this.updateAuth} />} /> 
+            <Route path="/signin" render={props => <Signin updateAuth={this.updateAuth} />} />
+            <Route path="/signup" render={props => <Signup updateAuth={this.updateAuth} />} /> 
             <Route path="/settings" component={Settings} /> 
             <Route path="/polls" component={Polls} /> 
             <Route exact path="/:username" component={UserDetail} /> 
