@@ -29,6 +29,46 @@ describe('user/authenticated routes', () => {
       .catch(error => done(error))
   })
 
+  describe('/api/signup/emailIsUsed/:email', () => {
+    it('should return false if given an email that does not exist in the database', (done) => {
+      const unusedEmail = 'notUsed@email.net'
+
+      request(app)
+        .get(`/api/signup/emailIsUsed/${unusedEmail}`)
+        .expect(200)
+        .expect(res => expect(res.body.used).to.be.false)
+        .end(done)
+    })
+
+    it('should return true if given an email that does exist in the database', (done) => {
+      request(app)
+        .get(`/api/signup/emailIsUsed/${users[0].email}`)
+        .expect(200)
+        .expect(res => expect(res.body.used).to.be.true)
+        .end(done)
+    })
+  })
+
+  describe('/api/signup/usernameIsUsed/:username', () => {
+    it('should return false if given a username that does not exist in the database', (done) => {
+      const unusedUsername = 'thisUsernameIsNotUsedAhywnere'
+
+      request(app)
+        .get(`/api/signup/usernameIsUsed/${unusedUsername}`)
+        .expect(200)
+        .expect(res => expect(res.body.used).to.be.false)
+        .end(done)
+    })
+
+    it('should return true if given a username that does exist in the database', (done) => {
+      request(app)
+        .get(`/api/signup/usernameIsUsed/${users[0].username}`)
+        .expect(200)
+        .expect(res => expect(res.body.used).to.be.true)
+        .end(done)
+    })
+  })
+
   describe('/api/signup', () => {
     it('should return error when not given the correct parameters (username, email, password)', (done) => {
       const user = {
@@ -67,7 +107,7 @@ describe('user/authenticated routes', () => {
         .post('/api/signup')
         .send(user)
         .expect(200)
-        .expect(res => expect(res.body).to.have.all.keys('token'))
+        .expect(res => expect(res.body).to.have.all.keys(['token', 'username']))
         .end(done)
     })
   })
@@ -111,7 +151,7 @@ describe('user/authenticated routes', () => {
         .post('/api/signin')
         .send(user)
         .expect(200)
-        .expect(res => expect(res.body).to.have.all.keys('token'))
+        .expect(res => expect(res.body).to.have.all.keys(['token', 'username']))
         .end(done)
     })
   })
@@ -261,13 +301,13 @@ describe('user/authenticated routes', () => {
         .end(done)
     })
 
-    // it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
-    //   request(app)
-    //     .get(`/api/poll/vote/${pollOptionId}`)
-    //     .expect(200)
-    //     .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
-    //     .end(done)
-    // })
+    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
+      request(app)
+        .get(`/api/poll/vote/${pollOptionId}`)
+        .expect(200)
+        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
+        .end(done)
+    })
 
     afterEach(destroyPolls)
   })
@@ -351,14 +391,6 @@ describe('global/public routes', () => {
         .get(`/api/poll/vote/${pollOptionId}`)
         .expect(400)
         .expect(res => expect(res.body).to.include({ error: 'poll option does not exist' }))
-        .end(done)
-    })
-
-    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
-      request(app)
-        .get(`/api/poll/vote/${pollOptionId}`)
-        .expect(200)
-        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
         .end(done)
     })
 
