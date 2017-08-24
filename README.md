@@ -70,3 +70,19 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * change create user to signup accross app
 * executive decision has been made that until opinions changed, password strength/requirements will only be assessed on the client side
 * I am starting /api/polls & /api/user/polls routes with pagination but considering trying to use lazy loading to make a more fluid
+* setup https locally?
+* update rest endpoints to use appropriate methods (get, post, patch, delete)
+
+## Limitations/implementations to Consider front end
+* 404 page
+* prevent form submit wiht invalid input
+* create password restrictions need fleshing out
+* validate email
+* use propTypes where needed
+* password restrictions need to be added to signup
+* confirm username and password are not in use on signup
+* error message needs to be added for invalid signin attempt
+* if redirecting due to invalid auth and then user is authed, redirect to the page they were trying to access before?
+* settings axios request could possibly be refactored into a function to be more dry
+* handle errors better client side
+* refactor certain pieces to their own functional componets? (eg pollDetail for handling [on click](https://stackoverflow.com/questions/29810914/react-js-onclick-cant-pass-value-to-method))
