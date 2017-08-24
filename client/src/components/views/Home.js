@@ -23,7 +23,8 @@ class Home extends Component {
         : <div>
             <div>Hello {this.state.username}!</div>
             <Link to={`/${this.state.username}/polls`}>View My Polls</Link>
-            {/* <Link>Create New Poll</Link> */}
+            <br />
+            <Link to={'/createPoll'}>Create New Poll</Link>
           </div>
     )
   }
