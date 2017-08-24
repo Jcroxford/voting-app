@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {BrowserRouter as Router, Link} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 class Nav extends Component {
   render() {
@@ -8,8 +8,9 @@ class Nav extends Component {
           <ul>
             <li><Link to="/">Home</Link></li>
             <li><Link to="/signin">Signin</Link></li>
-            <li><Link to="/signup">SignUp</Link></li> 
-            <li><Link to="/settings">settings</Link></li> 
+            <li><Link to="/signup">Signup</Link></li> 
+            <li><Link to="/settings">Settings</Link></li>
+            <li><Link to="/polls">Polls</Link></li>
           </ul>
       </div>
     )
