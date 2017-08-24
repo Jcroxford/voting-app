@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 import axios from 'axios'
 
 import {baseRoute} from '../../utils/api'
@@ -43,12 +44,12 @@ class Polls extends Component {
   }
 
   renderPolls() {
-    return this.state.polls.map(poll => <li key={poll.id}><strong>title</strong> {poll.title}</li>)
+    return this.state.polls.map(poll => <li key={poll.id}><strong>title</strong><Link to={`/poll/${poll.id}`}> {poll.title}</Link></li>)
   }
 
   componentWillMount() {
     console.log(this.state.polls);
-    this.getPills()
+    this.getPolls()
   }
 
   render() {

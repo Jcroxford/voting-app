@@ -51,7 +51,7 @@ class App extends Component {
             <Route path="/signup" render={props => <Signup updateAuth={this.updateAuth} />} />
             <Route path="/settings" component={Settings} />
             <Route path="/polls" component={Polls} />
-            <Route path="/:username/:pollId" component={PollDetail} />
+            <Route path="/poll/:pollId" component={PollDetail} />
           </Switch>
         </div>
       </Router>
