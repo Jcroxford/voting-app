@@ -60,6 +60,7 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * add helment.js to app to secure all the things
 * refactor routes/index and models/Users so that Users model contains more of the logic?
 * add toggle for hidden/visible text during password steps client side
+* add details to github when deploying app to heroku
 
 ## Limitations/implementations to Consider
 * user should only be able to vote on a poll once(check and store ip address?) (look into session storage to accomplish this probably) [disussion](https://forum.freecodecamp.org/t/voting-app-preventing-non-logged-in-users-from-voting-twice/35489/2)
@@ -86,3 +87,4 @@ This project was built using PostgreSQL. You must have postgres installed in ord
 * settings axios request could possibly be refactored into a function to be more dry
 * handle errors better client side
 * refactor certain pieces to their own functional componets? (eg pollDetail for handling [on click](https://stackoverflow.com/questions/29810914/react-js-onclick-cant-pass-value-to-method))
+* add a readme to fron end maybe?
