@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {Link} from 'react-router-dom'
 
 class Home extends Component {
   constructor(props) {
@@ -17,9 +18,13 @@ class Home extends Component {
 
   render() {
     return (
-      this.props.authenticated
-        ? <div>Hello {this.state.username} welcome to the home page!</div>
-        : <div>Welcome to the home page</div>
+      !this.props.authenticated
+        ? <div>Welcome to the home page</div>
+        : <div>
+            <div>Hello {this.state.username}!</div>
+            <Link to={`/${this.state.username}/polls`}>View My Polls</Link>
+            {/* <Link>Create New Poll</Link> */}
+          </div>
     )
   }
 }

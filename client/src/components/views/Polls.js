@@ -39,7 +39,6 @@ class Polls extends Component {
     const self = this
     axios.get(`${baseRoute}/api/polls/${this.state.page}`)
       .then(response => self.setState({ polls: response.data.polls, totalPages: Math.ceil(response.data.totalPolls / 12) }))
-      .then(() => console.log(self))
       .catch(error => console.log(error))
   }
 
@@ -48,7 +47,6 @@ class Polls extends Component {
   }
 
   componentWillMount() {
-    console.log(this.state.polls);
     this.getPolls()
   }
 
