@@ -16,7 +16,7 @@ class Polls extends Component {
 
     this.handlePageIncrement = this.handlePageIncrement.bind(this)
     this.handlePageDecrement = this.handlePageDecrement.bind(this)
-    this.getPills = this.getPolls.bind(this)
+    this.getPolls = this.getPolls.bind(this)
   }
 
   handlePageIncrement() {
