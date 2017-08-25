@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 class Nav extends Component {
   render() {
     return (
-      <div className="">
+      <div>
         <nav className="uk-navbar uk-navbar-container" uk-navbar>
           <div className="uk-navbar-right">
             <ul className="uk-navbar-nav">

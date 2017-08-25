@@ -47,16 +47,18 @@ class App extends Component {
       <Router>
         <div className="uk-container uk-container-expand">
           <Nav />
-          <Switch>
-            <Route exact path="/" render={props => <Home authenticated={this.state.authenticated} />} />
-            <Route path="/signin" render={props => <Signin updateAuth={this.updateAuth} />} />
-            <Route path="/signup" render={props => <Signup updateAuth={this.updateAuth} />} />
-            <Route path="/settings" component={Settings} />
-            <Route path="/:username/polls" component={UserPolls} />
-            <Route path="/CreatePoll" component={CreatePoll} />
-            <Route path="/polls" component={Polls} />
-            <Route path="/poll/:pollId" component={PollDetail} />
-          </Switch>
+          <div className="uk-flex uk-flex-center uk-margin-top">
+            <Switch>
+              <Route exact path="/" render={props => <Home authenticated={this.state.authenticated} />} />
+              <Route path="/signin" render={props => <Signin updateAuth={this.updateAuth} />} />
+              <Route path="/signup" render={props => <Signup updateAuth={this.updateAuth} />} />
+              <Route path="/settings" component={Settings} />
+              <Route path="/:username/polls" component={UserPolls} />
+              <Route path="/CreatePoll" component={CreatePoll} />
+              <Route path="/polls" component={Polls} />
+              <Route path="/poll/:pollId" component={PollDetail} />
+            </Switch>
+          </div>
         </div>
       </Router>
     )

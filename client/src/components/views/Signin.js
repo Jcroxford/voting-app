@@ -38,15 +38,18 @@ class Signin extends Component {
   
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" onChange={this.handleInputChange} />
-<br/>
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" onChange={this.handleInputChange} />
-<br/>
-        <button>Sign in</button>
-      </form>
+      <div className="uk-card uk-card-default uk-card-body uk-width-1-2">
+        <h3 className="card-title">Sign In</h3>
+        <form onSubmit={this.handleSubmit}>
+          <label htmlFor="email">Email</label>
+          <input className="uk-input" type="email" name="email" onChange={this.handleInputChange} />
+  <br/>
+          <label htmlFor="password">Password</label>
+          <input className="uk-input" type="password" name="password" onChange={this.handleInputChange} />
+  <br/>
+          <button className="uk-button uk-button-primary uk-margin-top">Sign in</button>
+        </form>
+      </div>
     )
   }
 }
