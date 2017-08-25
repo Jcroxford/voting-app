@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 
@@ -52,6 +53,10 @@ class Signin extends Component {
       </div>
     )
   }
+}
+
+Signin.propTypes = {
+  updateAuth: PropTypes.func.isRequired
 }
 
 export default withRouter(Signin)
