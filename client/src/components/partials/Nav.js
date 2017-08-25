@@ -1,7 +1,22 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
+import PropTypes from 'prop-types'
+import {Link, withRouter} from 'react-router-dom'
 
 class Nav extends Component {
+  constructor(props) {
+    super(props)
+
+    this.handleSignout = this.handleSignout.bind(this)
+  }
+  
+  handleSignout() {
+    console.log('handle signout clicked')
+    localStorage.removeItem('userData')
+    this.props.updateAuth('', false)
+
+    this.props.history.push('/')
+  }
+
   render() {
     return (
       <div>
@@ -13,6 +28,7 @@ class Nav extends Component {
               <li><Link to="/signup">Signup</Link></li>
               <li><Link to="/settings">Settings</Link></li>
               <li><Link to="/polls">Polls</Link></li>
+              <li><a onClick={this.handleSignout}>Sign Out</a></li>
             </ul>
           </div>
         </nav>
@@ -21,4 +37,8 @@ class Nav extends Component {
   }
 }
 
-export default Nav
+Nav.propTypes = {
+  updateAuth: PropTypes.func.isRequired
+}
+
+export default withRouter(Nav)

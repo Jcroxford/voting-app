@@ -46,7 +46,7 @@ class App extends Component {
     return (
       <Router>
         <div className="uk-container uk-container-expand">
-          <Nav />
+          <Nav updateAuth={this.updateAuth} />
           <div className="uk-flex uk-flex-center uk-margin-top">
             <Switch>
               <Route exact path="/" render={props => <Home authenticated={this.state.authenticated} />} />
