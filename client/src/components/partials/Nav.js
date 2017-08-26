@@ -8,19 +8,6 @@ class Nav extends Component {
 
     this.handleSignout = this.handleSignout.bind(this)
   }
-  
-  // renderRequireAuthRoutes() {
-  //   if(this.props.authenticated) { return }
-
-  //   return (
-  //     <li><Link to="/signin">Signin</Link></li>
-  //     <li><Link to="/signup">Signup</Link></li>
-  //   )
-  // }
-
-  // renderRequireNoAuthRoutes() {
-
-  // }
 
   handleSignout() {
     localStorage.removeItem('userData')
@@ -34,15 +21,15 @@ class Nav extends Component {
 
     return (
       <div>
-        <nav className="uk-navbar uk-navbar-container" uk-navbar>
+        <nav className="uk-navbar uk-navbar-container uk-box-shadow-medium" uk-navbar>
           <div className="uk-navbar-right">
             <ul className="uk-navbar-nav">
               <li><Link to="/">Home</Link></li>
               <li><Link to="/polls">All Polls</Link></li>
               {authenticated ? '' : <li><Link to="/signin">Signin</Link></li>}
-              {authenticated ? '' : <li><Link to="/signup">Signup</Link></li>}
+              {authenticated ? '' : <li className="uk-margin-right"><Link to="/signup">Signup</Link></li>}
               {authenticated ? <li><Link to="/settings">Settings</Link></li> : ''}
-              {authenticated ? <li><a onClick={this.handleSignout}>Sign Out</a></li> : ''}
+              {authenticated ? <li className="uk-margin-right"><a onClick={this.handleSignout}>Sign Out</a></li> : ''}
             </ul>
           </div>
         </nav>
