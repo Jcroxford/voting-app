@@ -43,7 +43,20 @@ class Polls extends Component {
   }
 
   renderPolls() {
-    return this.state.polls.map(poll => <li key={poll.id}><strong>title</strong><Link to={`/poll/${poll.id}`}> {poll.title}</Link></li>)
+    return this.state.polls.map(poll => {
+      return (
+        <div key={poll.id}>
+          <div className="uk-card uk-card-default uk-margin-top">
+            <div className="uk-card-body">
+              {poll.title}
+            </div>
+            <div className="uk-card-footer">
+              <button className="uk-button-small uk-button-primary">go to poll</button>
+            </div>
+          </div>
+        </div>
+      )
+    })
   }
 
   componentWillMount() {
@@ -53,12 +66,12 @@ class Polls extends Component {
   render() {
     return (
       this.state.polls.length === 0
-      ? <div>polls page</div>
+      ? <div className="uk-spinner">polls page</div>
       : <div>
-          <ul>
+          <div className="uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-grid">
             {this.renderPolls()}
-          </ul>
-          <div>totalPages: {this.state.totalPages}</div>
+          </div>
+            <div>totalPages: {this.state.totalPages}</div>
           <button onClick={this.handlePageIncrement}>increment</button>
           <button onClick={this.handlePageDecrement}>decrement</button>
         </div>

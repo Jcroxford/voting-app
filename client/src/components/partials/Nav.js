@@ -21,7 +21,7 @@ class Nav extends Component {
 
     return (
       <div>
-        <nav className="uk-navbar uk-navbar-container uk-box-shadow-medium" uk-navbar>
+        <nav className="uk-navbar uk-navbar-container uk-box-shadow-medium">
           <div className="uk-navbar-right">
             <ul className="uk-navbar-nav">
               <li><Link to="/">Home</Link></li>
