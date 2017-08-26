@@ -10,7 +10,6 @@ class Nav extends Component {
   }
   
   handleSignout() {
-    console.log('handle signout clicked')
     localStorage.removeItem('userData')
     this.props.updateAuth('', false)
 

@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 
+import RequireAuth from '../hoc/RequireAuth'
 import {baseRoute} from '../../utils/api'
 
 class Settings extends Component {
@@ -16,16 +16,6 @@ class Settings extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  componentWillMount() {
-    this.checkAuth()
-  }
-
-  checkAuth() {
-    const userData = localStorage.getItem('userData')
-
-    if(!userData) { this.props.history.push('/signin') }
   }
 
   handleInputChange(e) {
@@ -66,4 +56,4 @@ class Settings extends Component {
   }
 }
 
-export default withRouter(Settings)
+export default RequireAuth(Settings)

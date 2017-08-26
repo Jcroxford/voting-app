@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 
+// also includes withRouter
+import RequireNoAuth from '../hoc/RequireNoAuth'
 import {baseRoute} from '../../utils/api'
 
 class Signup extends Component {
@@ -66,4 +67,4 @@ Signup.propTypes = {
   updateAuth: PropTypes.func.isRequired
 }
 
-export default withRouter(Signup)
+export default RequireNoAuth(Signup)
