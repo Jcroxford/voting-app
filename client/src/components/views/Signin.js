@@ -80,7 +80,8 @@ class Signin extends Component {
               type="password" 
               name="password"
               placeholder="Don't worry, I wont tell anyone"
-              onChange={this.handleInputChange} />
+              onChange={this.handleInputChange} 
+            />
           </div>
   
           <div className="uk-margin">

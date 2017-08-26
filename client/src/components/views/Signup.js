@@ -14,7 +14,9 @@ class Signup extends Component {
       username: '',
       email: '',
       password: '',
-      confirmPassword: ''
+      confirmPassword: '',
+      invalidSubmission: false,
+      submissionError: ''
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -44,21 +46,63 @@ class Signup extends Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label htmlFor="username">Username</label>
-        <input type="text" name="username" onChange={this.handleInputChange} />
-<br/>
-        <label htmlFor="email">Email</label>
-        <input type="email" name="email" onChange={this.handleInputChange} />
-<br/>
-        <label htmlFor="password">Password</label>
-        <input type="password" name="password" onChange={this.handleInputChange} />
-<br/>
-        <label htmlFor="confirmPassword">Confirm Password</label>
-        <input type="password" name="confirmPassword" onChange={this.handleInputChange} />
-<br/>
-        <button>Sign Up</button>
-      </form>
+      <div className="uk-card uk-card-default uk-card-body uk-width-1-2@m uk-width-1-3@l uk-animation-slide-top-medium">
+        <h3 className="card-title">Sign Up</h3>
+        <form onSubmit={this.handleSubmit} className="uk-form-stacked">
+          {this.state.invalidSubmission
+            ? <div className="uk-margin uk-text-danger uk-animation-slide-bottom">{this.state.submissionError}</div> 
+            : ''
+          }
+          
+          <div className="uk-margin">
+            <label className="uk-form-label" htmlFor="username">Username</label>
+            <input 
+              className="uk-input" 
+              type="text" 
+              name="username" 
+              placeholder="urAvgVoter" 
+              onChange={this.handleInputChange}
+            />
+          </div>
+
+          <div className="uk-margin">
+            <label className="uk-form-label" htmlFor="email">Email</label>
+            <input
+              className="uk-input" 
+              type="email" 
+              name="email" 
+              placeholder="example@email.com"
+              onChange={this.handleInputChange}
+            />
+          </div>
+
+          <div className="uk-margin">
+            <label className="uk-form-label" htmlFor="password">Password</label>
+            <input 
+              className="uk-input" 
+              type="password" 
+              name="password"
+              placeholder="Don't worry, I wont tell anyone"
+              onChange={this.handleInputChange} 
+            />
+          </div>
+
+          <div className="uk-margin">
+            <label className="uk-form-label" htmlFor="confirmPassword">Confirm Password</label>
+            <input
+              className="uk-input"
+              type="password"
+              name="confirmPassword"
+              placeholder="One more time!"
+              onChange={this.handleInputChange}
+            />
+          </div>
+  
+          <div className="uk-margin">
+            <button className="uk-button uk-button-primary">Sign Up</button>
+          </div>
+        </form>
+      </div>
     )
   }
 }
