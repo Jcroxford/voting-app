@@ -12,7 +12,9 @@ class Signin extends Component {
 
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      invalidSubmission: false,
+      submissionError: ''
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
@@ -26,6 +28,14 @@ class Signin extends Component {
   handleSubmit(e) {
     e.preventDefault()
 
+    // check that user has provided valid input
+    if(!this.state.email || !this.state.password) { 
+      return this.setState({ 
+        invalidSubmission: true, 
+        submissionError: 'please enter an email and password to proceed'
+      })
+    }
+
     const user = this
     
     axios.post(`${baseRoute}/api/signin`, {
@@ -35,21 +45,47 @@ class Signin extends Component {
       .then(response => localStorage.setItem('userData', JSON.stringify(response.data)))
       .then(() => this.props.updateAuth(null, true))
       .then(() => this.props.history.push('/'))
-      .catch(error => this.props.updateAuth('internal error, please wait a minute and try again', false))
+      .catch(error => {
+        this.props.updateAuth('internal error, please wait a minute and try again', false)
+
+        this.setState({ invalidSubmission: true, submissionError: 'invalid username or password' })
+      })
   }
   
   render() {
     return (
-      <div className="uk-card uk-card-default uk-card-body uk-width-1-2">
+      <div className="uk-card uk-card-default uk-card-body uk-width-1-2@m uk-width-1-3@l uk-animation-slide-top-medium">
         <h3 className="card-title">Sign In</h3>
-        <form onSubmit={this.handleSubmit}>
-          <label htmlFor="email">Email</label>
-          <input className="uk-input" type="email" name="email" onChange={this.handleInputChange} />
-  <br/>
-          <label htmlFor="password">Password</label>
-          <input className="uk-input" type="password" name="password" onChange={this.handleInputChange} />
-  <br/>
-          <button className="uk-button uk-button-primary uk-margin-top">Sign in</button>
+        <form onSubmit={this.handleSubmit} className="uk-form-stacked">
+          {this.state.invalidSubmission
+            ? <div className="uk-margin uk-text-danger uk-animation-slide-bottom">{this.state.submissionError}</div> 
+            : ''
+          }
+          
+          <div className="uk-margin">
+            <label className="uk-form-label" htmlFor="email">Email</label>
+            <input 
+              className="uk-input" 
+              type="email" 
+              name="email" 
+              placeholder="example@email.com"
+              onChange={this.handleInputChange}
+            />
+          </div>
+
+          <div className="uk-margin">
+            <label className="uk-form-label" htmlFor="password">Password</label>
+            <input 
+              className="uk-input" 
+              type="password" 
+              name="password"
+              placeholder="Don't worry, I wont tell anyone"
+              onChange={this.handleInputChange} />
+          </div>
+  
+          <div className="uk-margin">
+            <button className="uk-button uk-button-primary">Sign In</button>
+          </div>
         </form>
       </div>
     )
