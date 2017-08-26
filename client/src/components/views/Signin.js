@@ -54,40 +54,45 @@ class Signin extends Component {
   
   render() {
     return (
-      <div className="uk-card uk-card-default uk-card-body uk-width-1-2@m uk-width-1-3@l uk-animation-slide-top-medium">
-        <h3 className="card-title">Sign In</h3>
-        <form onSubmit={this.handleSubmit} className="uk-form-stacked">
-          {this.state.invalidSubmission
-            ? <div className="uk-margin uk-text-danger uk-animation-slide-bottom">{this.state.submissionError}</div> 
-            : ''
-          }
-          
-          <div className="uk-margin">
-            <label className="uk-form-label" htmlFor="email">Email</label>
-            <input 
-              className="uk-input" 
-              type="email" 
-              name="email" 
-              placeholder="example@email.com"
-              onChange={this.handleInputChange}
-            />
-          </div>
+      <div className="uk-card uk-card-default uk-width-1-2@m uk-width-1-3@l uk-animation-slide-top-medium">
+        <div className="uk-card-header uk-card-primary">
+          <h3 className="card-title">Sign In</h3>
+        </div>
 
-          <div className="uk-margin">
-            <label className="uk-form-label" htmlFor="password">Password</label>
-            <input 
-              className="uk-input" 
-              type="password" 
-              name="password"
-              placeholder="Don't worry, I wont tell anyone"
-              onChange={this.handleInputChange} 
-            />
-          </div>
-  
-          <div className="uk-margin">
-            <button className="uk-button uk-button-primary">Sign In</button>
-          </div>
-        </form>
+        <div className="uk-card-body">
+          <form onSubmit={this.handleSubmit} className="uk-form-stacked">
+            {this.state.invalidSubmission
+              ? <div className="uk-margin uk-text-danger uk-animation-slide-bottom">{this.state.submissionError}</div> 
+              : ''
+            }
+            
+            <div className="uk-margin">
+              <label className="uk-form-label" htmlFor="email">Email</label>
+              <input 
+                className="uk-input" 
+                type="email" 
+                name="email" 
+                placeholder="example@email.com"
+                onChange={this.handleInputChange}
+              />
+            </div>
+
+            <div className="uk-margin">
+              <label className="uk-form-label" htmlFor="password">Password</label>
+              <input 
+                className="uk-input" 
+                type="password" 
+                name="password"
+                placeholder="Don't worry, I wont tell anyone"
+                onChange={this.handleInputChange} 
+              />
+            </div>
+    
+            <div className="uk-margin">
+              <button className="uk-button uk-button-primary">Sign In</button>
+            </div>
+          </form>
+        </div>
       </div>
     )
   }
