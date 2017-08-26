@@ -30,26 +30,28 @@ class App extends Component {
     
     if(!userData) { return }
 
-    this.setState({ authenticated: true })
+    const auth = this.state.auth
+    auth.authenticated = true
+
+    this.setState({ auth })
   }
 
   updateAuth(error, authenticated) {
     if(!error) { error = '' }
 
-    this.setState({
-      error,
-      authenticated
-    })
+    const auth = { error, authenticated }
+
+    this.setState({ auth })
   }
 
   render () {
     return (
       <Router>
         <div className="uk-container uk-container-expand">
-          <Nav updateAuth={this.updateAuth} />
+          <Nav authenticated={this.state.auth.authenticated} updateAuth={this.updateAuth} />
           <div className="uk-flex uk-flex-center uk-margin-top">
             <Switch>
-              <Route exact path="/" render={props => <Home authenticated={this.state.authenticated} />} />
+              <Route exact path="/" render={props => <Home authenticated={this.state.auth.authenticated} />} />
               <Route path="/signin" render={props => <Signin updateAuth={this.updateAuth} />} />
               <Route path="/signup" render={props => <Signup updateAuth={this.updateAuth} />} />
               <Route path="/settings" component={Settings} />
