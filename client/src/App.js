@@ -47,9 +47,9 @@ class App extends Component {
   render () {
     return (
       <Router>
-        <div className="uk-container uk-container-expand">
+        <div>
           <Nav authenticated={this.state.auth.authenticated} updateAuth={this.updateAuth} />
-          <div className="uk-margin-top">
+          <div className="uk-container uk-container-expand uk-margin-top">
             <Switch>
               <Route exact path="/" render={props => <Home authenticated={this.state.auth.authenticated} />} />
               <Route path="/signin" render={props => <Signin updateAuth={this.updateAuth} />} />
