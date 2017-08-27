@@ -29,9 +29,6 @@ class Polls extends Component {
         
         self.setState({ polls, totalPages: Math.ceil(response.data.totalPolls / 36), fetchingPolls: false })
       })
-      .then(() => {
-        for(const poll of self.state.polls) {console.log(poll.id)}
-      })
       .catch(error => console.log(error))
   }
 
@@ -40,7 +37,7 @@ class Polls extends Component {
       return (
         <div key={poll.id}>
           <div 
-            className="uk-card uk-card-default uk-margin-bottom uk-card-hover" 
+            className="uk-card uk-card-default uk-margin-bottom uk-card-hover uk-animation-fade" 
             onClick={() => this.props.history.push(`/poll/${poll.id}`)}
           >
             <div className="uk-card-body">
@@ -55,7 +52,7 @@ class Polls extends Component {
   handleScroll() {
     const clientHeight = document.documentElement.clientHeight
     const amountScrolled = document.body.scrollTop
-    const closeToPageBottom = document.body.scrollHeight - 75
+    const closeToPageBottom = document.body.scrollHeight - 150
     const { page, totalPages } = this.state
 
     if(clientHeight + amountScrolled >= closeToPageBottom && page < totalPages && !this.state.fetchingPolls) {
