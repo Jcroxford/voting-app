@@ -179,10 +179,11 @@ router.get('/api/user/poll/delete/:pollId', requireAuth, (req, res) => {
 
 // *** public routes ***
 router.get('/api/polls/:page', (req, res) => {
+  const pollsPerPage = 36
   models.Polls
     .findAndCountAll({
-      limit: 12,
-      offset: (req.params.page - 1) * 12,
+      limit: pollsPerPage,
+      offset: (req.params.page - 1) * pollsPerPage,
       attributes: ['id', 'title']
     })
     .then(results => {
