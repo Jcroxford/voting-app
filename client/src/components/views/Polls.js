@@ -38,7 +38,7 @@ class Polls extends Component {
         <div key={poll.id}>
           <div 
             className="uk-card uk-card-default uk-margin-bottom uk-card-hover uk-animation-fade" 
-            onClick={() => this.props.history.push(`/poll/${poll.id}`)}
+            onClick={() => this.props.history.push(`/poll/${poll.id}/${poll.title}`)}
           >
             <div className="uk-card-body">
               {poll.title}

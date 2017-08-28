@@ -58,7 +58,7 @@ class App extends Component {
               <Route path="/:username/polls" component={UserPolls} />
               <Route path="/CreatePoll" component={CreatePoll} />
               <Route path="/polls" component={Polls} />
-              <Route path="/poll/:pollId" component={PollDetail} />
+              <Route path="/poll/:pollId/:pollTitle" component={PollDetail} />
             </Switch>
           </div>
         </div>
