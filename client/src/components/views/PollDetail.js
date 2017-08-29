@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import {HorizontalBar} from 'react-chartjs-2'
 
+import PollChart from '../partials/PollChart'
 import {baseRoute} from '../../utils/api'
 
 class PollDetail extends Component {
@@ -50,49 +50,6 @@ class PollDetail extends Component {
       </div>
       
     ))
-  }
-
-  renderPollResults() {
-    const {pollOptions} = this.state
-    const labels = pollOptions.map(option => option.pollText)
-    const voteData = pollOptions.map(option => option.voteCount)
-    const data = {
-      labels,
-      datasets: [
-        {
-          label: false,
-          backgroundColor: 'rgba(255,99,132,0.2)',
-          borderColor: 'rgba(255,99,132,1)',
-          borderWidth: 1,
-          hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-          hoverBorderColor: 'rgba(255,99,132,1)',
-          data: voteData
-        }
-      ]
-    }
-    const options = {
-      legend: {
-        display: false
-      },
-      scales: {
-        xAxes: [{
-          gridLines: {
-            drawOnChartArea: false
-          }
-        }],
-        yAxes: [{
-          gridLines: {
-            drawOnChartArea: false
-          }
-        }]
-      }
-    }
-
-    return (
-      <div>
-        <HorizontalBar data={data} options={options} />
-      </div>
-    )
   }
 
   // *** event handlers & react functions ***
@@ -146,8 +103,9 @@ class PollDetail extends Component {
   }
 
   render() {
+    const {pollOptions, userHasVoted} = this.state
     return (
-      this.state.pollOptions.length === 0
+      pollOptions.length === 0
       ? <div>Loading</div>
       : <div className="uk-flex uk-flex-center">
           <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top">
@@ -156,7 +114,7 @@ class PollDetail extends Component {
             </div>
             
             <div className="uk-card-body">
-              {this.state.userHasVoted ? this.renderPollResults() : this.renderVoteForm()}
+              {userHasVoted ? <PollChart pollOptions={pollOptions} /> : this.renderVoteForm()}
             </div>
           </div>
         </div>
