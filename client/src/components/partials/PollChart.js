@@ -5,17 +5,21 @@ import {HorizontalBar} from 'react-chartjs-2'
 const PollChart = (props) => {
   const {pollOptions} = props
 
+  const voteCounts = pollOptions.map(option => option.voteCount)
+  const totalVotes = voteCounts.reduce((sum, voteCount) => sum += voteCount)
+  const labels = pollOptions.map(option => `${option.pollText} ${Math.round((option.voteCount / totalVotes) * 100)}%`)
+  
   const data = {
-    labels: pollOptions.map(option => option.pollText),
+    labels,
     datasets: [
       {
         label: false,
-        backgroundColor: 'rgba(255,99,132,0.2)',
-        borderColor: 'rgba(255,99,132,1)',
+        backgroundColor: 'rgba(30,135,240,0.2)',
+        borderColor: 'rgba(30,135,240,1)',
         borderWidth: 1,
-        hoverBackgroundColor: 'rgba(255,99,132,0.4)',
-        hoverBorderColor: 'rgba(255,99,132,1)',
-        data: pollOptions.map(option => option.voteCount)
+        hoverBackgroundColor: 'rgba(30,135,240,0.4)',
+        hoverBorderColor: 'rgba(30,135,240,1)',
+        data: voteCounts
       }
     ]
   }
