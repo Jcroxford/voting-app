@@ -1,0 +1,19 @@
+.uk-navbar-container:not(.uk-navbar-transparent) {
+  background-color: #1e87f0;
+  /* box-shadow: 0 5px 15px rgba(0,0,0,.08);   FIXME: play around a bit with the shadow, otherwise just use uikit default  */
+  box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px rgba(0,0,0,.14), 0 1px 10px rgba(0,0,0,.12);
+}
+
+.uk-navbar-nav>li>a {
+  color: #fff;
+  opacity: 0.7;
+}
+
+.uk-navbar-nav>li>a:hover,
+.uk-navbar-nav>li>a:active,
+.uk-navbar-nav>li>a:focus,
+.uk-navbar-nav>li.uk-active>a {
+  color: #fff;
+  opacity: 1;
+}
+
