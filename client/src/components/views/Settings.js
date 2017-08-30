@@ -11,19 +11,55 @@ class Settings extends Component {
     this.state = {
       passwordAttempt: '',
       newPassword: '',
-      confirmNewPassword: ''
+      confirmNewPassword: '',
+      invalidSubmission: false,
+      submissionError: '',
+      newPasswordsMatch: true,
+      currentPasswordIsCorrect: true,
+      passwordChanged: false
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
+  // *** form checking methods ***
+  confirmPasswordsMatch(e) {
+    // event value is used instead of state confirmPassword to avoid issues with set state async execution
+    if(this.state.newPassword !== e.target.value) {
+      return this.setState({ newPasswordsMatch: false }, () => this.updateSubmissionStatus())
+    }
+
+    this.setState({ newPasswordsMatch: true }, () => this.updateSubmissionStatus())
+  }
+
+  // only returns true when all form values are true. This prevents error message from going away on invalid input
+  updateSubmissionStatus() {
+    const {
+      newPasswordsMatch,
+      currentPasswordIsCorrect,
+    } = this.state
+
+    let submissionError = ''
+    if(!newPasswordsMatch) { submissionError = 'Expected Passwords to Match' }
+    else if (!currentPasswordIsCorrect) { submissionError = 'Current Password Entered is Incorrect' }
+
+    // the only time submission error will be an empty string is if there are no invalid inputs
+    if(!submissionError) {
+      return this.setState({invalidSubmission: false})
+    }
+
+    this.setState({ invalidSubmission: true, submissionError })
+  }
+
+  // *** event handlers ***
   handleInputChange(e) {
     this.setState({ [e.target.name]: e.target.value })
   }
 
   handleSubmit(e) {
     e.preventDefault()
+    const self = this
     const { newPassword, confirmNewPassword, passwordAttempt } = this.state
 
     if(newPassword !== confirmNewPassword) { return console.log('passwords must match') }
@@ -34,27 +70,55 @@ class Settings extends Component {
     const config = { headers: { authorization: token } }
 
     axios.post(`${baseRoute}/api/user/password/change`, data, config)
-      .then(response => console.log(response.data))
-      .catch(error => console.log(error))
+      .then(response => {
+        // settings currentPasswordIsCorrect to true resets error message if a successful change 
+        // attempt happens after a failed attempt
+        this.setState(
+          { passwordChanged: true, currentPasswordIsCorrect: true },
+          () => self.updateSubmissionStatus()
+        )
+      })
+      // at this time, errors are assumed to mean invalid password has been entered
+      .catch(error => this.setState({ currentPasswordIsCorrect: false }, () => self.updateSubmissionStatus()))
   }
 
   render() {
     return (
       <div className="uk-flex uk-flex-center">
-        <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-medium">
+        <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-small">
           <div className="uk-card-header uk-card-primary">
             <h3 className="card-title">Change Your Password</h3>
           </div>
 
           <div className="uk-card-body">
             <form onSubmit={this.handleSubmit} className="uk-form-stacked">
-              {this.state.invalidSubmission
-                ? <div className="uk-margin uk-text-danger uk-animation-slide-bottom">{this.state.submissionError}</div> 
-                : ''
+              {
+                this.state.invalidSubmission
+                  ? <div 
+                      className="uk-margin uk-text-danger uk-animation-slide-bottom"
+                    >
+                      {this.state.submissionError}
+                    </div>
+                  : ''
+              }
+
+              {
+                this.state.passwordChanged
+                  ? <div 
+                      className="uk-margin uk-text-success uk-animation-slide-bottom"
+                    >
+                      Password Updated Successfully
+                    </div> 
+                  : ''
               }
 
               <div className="uk-margin">
-                <label className="uk-form-label" htmlFor="passwordAttempt">Current Password</label>
+                <label 
+                  className="uk-form-label" 
+                  htmlFor="passwordAttempt"
+                >
+                  Current Password
+                </label>
                 <input 
                   className="uk-input" 
                   type="password" 
@@ -67,7 +131,7 @@ class Settings extends Component {
               <div className="uk-margin">
                 <label className="uk-form-label" htmlFor="newPassword">New Password</label>
                 <input 
-                  className="uk-input" 
+                  className={`uk-input ${this.state.newPasswordsMatch ? '' : 'uk-form-danger'}`}
                   type="password" 
                   name="newPassword"
                   placeholder="best make it better than p@ssword123"
@@ -76,13 +140,18 @@ class Settings extends Component {
               </div>
 
               <div className="uk-margin">
-                <label className="uk-form-label" htmlFor="confirmNewPassword">Confirm New Password</label>
+                <label 
+                  className="uk-form-label" 
+                  htmlFor="confirmNewPassword"
+                >
+                  Confirm New Password
+                </label>
                 <input 
-                  className="uk-input" 
+                  className={`uk-input ${this.state.newPasswordsMatch ? '' : 'uk-form-danger'}`}
                   type="password" 
                   name="confirmNewPassword"
                   placeholder="one more time"
-                  onChange={this.handleInputChange} 
+                  onChange={(e) => { this.handleInputChange(e); this.confirmPasswordsMatch(e) }} 
                 />
               </div>
       
