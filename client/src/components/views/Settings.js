@@ -45,11 +45,9 @@ class Settings extends Component {
     else if (!currentPasswordIsCorrect) { submissionError = 'Current Password Entered is Incorrect' }
 
     // the only time submission error will be an empty string is if there are no invalid inputs
-    if(!submissionError) {
-      return this.setState({invalidSubmission: false})
-    }
+    const invalidSubmission = Boolean(submissionError)
 
-    this.setState({ invalidSubmission: true, submissionError })
+    this.setState({ invalidSubmission, submissionError })
   }
 
   // *** event handlers ***

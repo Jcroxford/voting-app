@@ -30,7 +30,7 @@ class Signup extends Component {
   }
 
   // *** form input and availability checking methods ***
-  // only returns true when all values are true. This prevents error message from going away on invalid input
+  // only returns true when all form values are true. This prevents error message from going away on invalid input
   updateSubmissionStatus() {
     const {
       invalidUsername, 
@@ -38,11 +38,15 @@ class Signup extends Component {
       passwordsMatch
     } = this.state
 
-    if(!invalidEmail && !invalidUsername && passwordsMatch) {
-      return this.setState({invalidSubmission: false})
-    }
+    let submissionError = ''
+    if (invalidUsername) { submissionError = 'Username Is Already In Use' }
+    else if (invalidEmail) { submissionError = 'Email Is Already In Use' }
+    else if(!passwordsMatch) { submissionError = 'Expected Passwords to Match' }
 
-    this.setState({ invalidSubmission: true })
+    // the only time submission error will be an empty string is if there are no invalid inputs
+    const invalidSubmission = Boolean(submissionError)
+
+    this.setState({ invalidSubmission, submissionError })
   }
 
   checkUsernameAvailability(e) {
@@ -54,17 +58,7 @@ class Signup extends Component {
       .then(response => {
         const {used} = response.data
 
-        if(!used) {
-          self.setState({ invalidUsername: used })
-          self.updateSubmissionStatus()
-          return
-        }
-        
-        self.setState({
-          invalidUsername: used,
-          invalidSubmission: true,
-          submissionError: 'Username Is Already In Use'
-        })
+        self.setState({ invalidUsername: used }, () => self.updateSubmissionStatus())
       })
       .catch(err => console.log(err))
   }
@@ -78,32 +72,16 @@ class Signup extends Component {
       .then(response => {
         const {used} = response.data
 
-        if(!used) {
-          self.setState({ invalidEmail: used })
-          self.updateSubmissionStatus()
-          return
-        }
-        
-        self.setState({
-          invalidEmail: used,
-          invalidSubmission: true,
-          submissionError: 'Email Is Already In Use'
-        })
+        self.setState({ invalidEmail: used }, () => self.updateSubmissionStatus())
       })
       .catch(err => console.log(err))
   }
 
   confirmPasswordsMatch(e) {
     // event value is used instead of state confirmPassword to avoid issues with set state async execution
-    if(this.state.password !== e.target.value) {
-      return this.setState({
-        passwordsMatch: false,
-        invalidSubmission: true,
-        submissionError: 'Expected Passwords To Match'
-      })
-    }
+    const passwordsMatch = this.state.password === e.target.value
 
-    this.setState({ passwordsMatch: true }, () => this.updateSubmissionStatus())
+    this.setState({ passwordsMatch }, () => this.updateSubmissionStatus())
   }
   
   // *** event handlers ***
