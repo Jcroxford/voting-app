@@ -110,7 +110,7 @@ class Signup extends Component {
     axios.post(`${baseRoute}/api/signup`, { username, email, password })
       .then(response => localStorage.setItem('userData', JSON.stringify(response.data)))
       .then(() => this.props.updateAuth('', true))
-      .then(() => this.props.history.push('/'))
+      .then(() => this.props.history.goBack())
       .catch(error => this.props.updateAuth('internal error, please wait a minute and try again', false))
   }
 

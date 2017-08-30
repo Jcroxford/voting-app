@@ -48,7 +48,7 @@ class Signin extends Component {
       })
       .then(response => localStorage.setItem('userData', JSON.stringify(response.data)))
       .then(() => this.props.updateAuth(null, true))
-      .then(() => this.props.history.push('/'))
+      .then(() => this.props.history.goBack())
       .catch(error => {
         this.props.updateAuth('internal error, please wait a minute and try again', false)
 
