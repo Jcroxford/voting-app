@@ -118,14 +118,18 @@ class Signup extends Component {
   handleSubmit(e) {
     e.preventDefault()
     const user = this
+    const {username, email, password, confirmPassword} = user.state
 
-    if(user.state.invalidSubmission) { return console.log('enter valid input for each field') } // FIXME: handle this better?
-
-    axios.post(`${baseRoute}/api/signup`, { 
-        username: user.state.username,
-        email: user.state.email,
-        password: user.state.password
+    // validate user input before submit
+    if(user.state.invalidSubmission) { return }
+    if(!username || !email || !password || !confirmPassword) {
+      return user.setState({
+        invalidSubmission: true,
+        submissionError: 'please fill out every form field'
       })
+    }
+
+    axios.post(`${baseRoute}/api/signup`, { username, email, password })
       .then(response => localStorage.setItem('userData', JSON.stringify(response.data)))
       .then(() => this.props.updateAuth('', true))
       .then(() => this.props.history.push('/'))
