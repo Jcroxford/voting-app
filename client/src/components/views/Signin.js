@@ -22,6 +22,10 @@ class Signin extends Component {
   }
 
   handleInputChange(e) {
+    const maxInputSize = 72
+
+    if(e.target.value.length > maxInputSize) { return }
+
     this.setState({ [e.target.name]: e.target.value })
   }
 
@@ -55,7 +59,7 @@ class Signin extends Component {
   render() {
     return (
       <div className="uk-flex uk-flex-center">
-        <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-medium">
+        <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-small">
           <div className="uk-card-header uk-card-primary">
             <h3 className="card-title">Sign In</h3>
           </div>
@@ -74,6 +78,7 @@ class Signin extends Component {
                   type="email" 
                   name="email" 
                   placeholder="example@email.com"
+                  value={this.state.email}
                   onChange={this.handleInputChange}
                 />
               </div>
