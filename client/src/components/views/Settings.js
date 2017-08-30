@@ -52,6 +52,10 @@ class Settings extends Component {
 
   // *** event handlers ***
   handleInputChange(e) {
+    const maxInputSize = 72
+
+    if(e.target.value.length > maxInputSize) { return }
+
     this.setState({ [e.target.name]: e.target.value })
   }
 
@@ -122,6 +126,7 @@ class Settings extends Component {
                   type="password" 
                   name="passwordAttempt"
                   placeholder="Prove yourself!"
+                  value={this.state.passwordAttempt}
                   onChange={this.handleInputChange} 
                 />
               </div>
@@ -133,6 +138,7 @@ class Settings extends Component {
                   type="password" 
                   name="newPassword"
                   placeholder="best make it better than p@ssword123"
+                  value={this.state.newPassword}
                   onChange={this.handleInputChange} 
                 />
               </div>
@@ -149,6 +155,7 @@ class Settings extends Component {
                   type="password" 
                   name="confirmNewPassword"
                   placeholder="one more time"
+                  value={this.state.confirmNewPassword}
                   onChange={(e) => { this.handleInputChange(e); this.confirmPasswordsMatch(e) }} 
                 />
               </div>

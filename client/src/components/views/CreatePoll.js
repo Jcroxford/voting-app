@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 
+import RequireAuth from '../hoc/RequireAuth.js'
 import {baseRoute} from '../../utils/api'
 
 class CreatePoll extends Component {
@@ -19,6 +20,10 @@ class CreatePoll extends Component {
   }
 
   handleOptionChange(e) {
+    const maxInputSize = 72
+
+    if(e.target.value.length > maxInputSize) { return }
+    
     // eslint-disable-next-line
     const optionIndex = parseInt(e.target.name.replace(/option/, ''))
     const options = this.state.options
@@ -52,6 +57,10 @@ class CreatePoll extends Component {
   }
 
   handleTitleChange(e) {
+    const maxInputSize = 72
+
+    if(e.target.value.length > maxInputSize) { return }
+
     this.setState({ title: e.target.value })
   }
 
@@ -71,13 +80,6 @@ class CreatePoll extends Component {
     axios.post(`${baseRoute}/api/user/createPoll`, data, config)
       .then(response => this.props.history.push('/'))
       .catch(error => console.log(error))
-  }
-
-  componentWillMount() {
-    // check auth
-    const userData = localStorage.getItem('userData')
-
-    if(!userData) { this.props.history.push('/signin') }
   }
   
   render() {
@@ -101,6 +103,7 @@ class CreatePoll extends Component {
                   type="text" 
                   name="title" 
                   placeholder="Poll Title"
+                  value={this.state.title}
                   onChange={this.handleTitleChange}
                 />
               </div>
@@ -118,4 +121,4 @@ class CreatePoll extends Component {
   }
 }
 
-export default CreatePoll
+export default RequireAuth(CreatePoll)
