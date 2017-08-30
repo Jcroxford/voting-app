@@ -19,6 +19,7 @@ class CreatePoll extends Component {
   }
 
   handleOptionChange(e) {
+    // eslint-disable-next-line
     const optionIndex = parseInt(e.target.name.replace(/option/, ''))
     const options = this.state.options
 

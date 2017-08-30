@@ -108,7 +108,7 @@ class PollDetail extends Component {
       pollOptions.length === 0
       ? <div>Loading</div>
       : <div className="uk-flex uk-flex-center">
-          <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top">
+          <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-small">
             <div className="uk-card-header uk-card-primary">
               <h3 className="uk-card-title">{this.props.match.params.pollTitle}</h3>
             </div>
