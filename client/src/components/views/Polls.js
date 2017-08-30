@@ -52,7 +52,8 @@ class Polls extends Component {
   handleScroll() {
     const clientHeight = document.documentElement.clientHeight
     const amountScrolled = document.body.scrollTop
-    const closeToPageBottom = document.body.scrollHeight - 150
+    // sets up page to update when there is a third of client's page height left to scroll through 
+    const closeToPageBottom = document.body.scrollHeight - ((clientHeight / 3 ) * 2)
     const { page, totalPages } = this.state
 
     if(clientHeight + amountScrolled >= closeToPageBottom && page < totalPages && !this.state.fetchingPolls) {
