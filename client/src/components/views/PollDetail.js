@@ -4,6 +4,8 @@ import axios from 'axios'
 import PollChart from '../partials/PollChart'
 import {baseRoute} from '../../utils/api'
 
+import '../../styles/PollDetail.css'
+
 class PollDetail extends Component {
   constructor() {
     super()
@@ -115,6 +117,10 @@ class PollDetail extends Component {
             
             <div className="uk-card-body">
               {userHasVoted ? <PollChart pollOptions={pollOptions} /> : this.renderVoteForm()}
+            </div>
+
+            <div className="uk-card-footer">
+              <div className="poll-link">{`${baseRoute}${encodeURI(this.props.match.url)}`}</div>
             </div>
           </div>
         </div>
