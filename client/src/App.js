@@ -9,6 +9,7 @@ import UserPolls from './components/views/UserPolls'
 import CreatePoll from './components/views/CreatePoll'
 import Polls from './components/views/Polls'
 import PollDetail from './components/views/PollDetail'
+import NotFound from './components/views/NotFound'
 import Nav from './components/partials/Nav'
 
 class App extends Component {
@@ -59,6 +60,7 @@ class App extends Component {
               <Route path="/CreatePoll" component={CreatePoll} />
               <Route path="/polls" component={Polls} />
               <Route path="/poll/:pollId/:pollTitle" component={PollDetail} />
+              <Route path="*" component={NotFound} />
             </Switch>
           </div>
         </div>
