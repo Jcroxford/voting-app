@@ -31,7 +31,8 @@ class UserPolls extends Component {
         if(!response.data.success) { return }
 
         const polls = self.state.polls
-        const deletedPollIndex = polls.indexOf(poll => poll.id === pollId)
+        const deletedPollIndex = polls.findIndex(poll => poll.id === pollId)
+
         polls.splice(deletedPollIndex, 1)
 
         this.setState({ polls })
@@ -45,14 +46,23 @@ class UserPolls extends Component {
       <div key={poll.id}>
         <div 
           className="uk-card uk-card-default uk-margin-bottom uk-card-hover uk-animation-fade" 
-          onClick={() => this.props.history.push(`/poll/${poll.id}`)}
         >
           
-          <div className="uk-card-body">
+          <div 
+            className="uk-card-body"
+            onClick={() => this.props.history.push(`/poll/${poll.id}/${poll.title}`)}
+          >
             {poll.title}
           </div>
 
           <div className="uk-card-footer">
+            <button 
+              className="uk-button uk-button-primary uk-button-small uk-margin-right"
+              onClick={() => this.props.history.push(`/poll/${poll.id}/${poll.title}`)}
+            >
+              View poll
+            </button>
+
             <button 
               className="uk-button uk-button-small uk-button-danger" 
               onClick={() => this.deletePoll(poll.id)}
