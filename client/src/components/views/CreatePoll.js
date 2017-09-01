@@ -78,7 +78,7 @@ class CreatePoll extends Component {
     const config = { headers: { authorization: token } }
 
     axios.post(`${baseRoute}/api/user/createPoll`, data, config)
-      .then(response => this.props.history.push('/'))
+      .then(response => this.props.history.push(`/poll/${response.data.pollId}/${response.data.title}`))
       .catch(error => console.log(error))
   }
   

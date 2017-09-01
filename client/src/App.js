@@ -12,6 +12,8 @@ import PollDetail from './components/views/PollDetail'
 import NotFound from './components/views/NotFound'
 import Nav from './components/partials/Nav'
 
+import './styles/App.css'
+
 class App extends Component {
   constructor() {
     super()

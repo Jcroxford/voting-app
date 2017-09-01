@@ -132,7 +132,7 @@ router.post('/api/user/createPoll', requireAuth, (req, res) => {
     {
       include: [models.PollOptions]
     })
-    .then(() => res.json({ success: 'poll created successfully' }))
+    .then(poll => res.json({ pollId: poll.id, title: poll.title }))
     .catch(error => console.log(error))
 })
 
