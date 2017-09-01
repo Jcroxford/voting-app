@@ -50,6 +50,7 @@ class App extends Component {
       <Router>
         <div>
           <Nav authenticated={this.state.auth.authenticated} updateAuth={this.updateAuth} />
+
           <div className="uk-container uk-container-expand uk-margin-top">
             <Switch>
               <Route exact path="/" render={props => <Home authenticated={this.state.auth.authenticated} />} />
@@ -63,6 +64,7 @@ class App extends Component {
               <Route path="*" component={NotFound} />
             </Switch>
           </div>
+
         </div>
       </Router>
     )

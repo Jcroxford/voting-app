@@ -1,3 +1,8 @@
+/*
+ * ==============================
+ *  main nav styling
+ * ==============================
+ */
 .uk-navbar-container:not(.uk-navbar-transparent) {
   background-color: #1e87f0;
   box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px rgba(0,0,0,.14), 0 1px 10px rgba(0,0,0,.12);
@@ -16,12 +21,24 @@
   opacity: 1;
 }
 
+/* hide main nav on mobile screens  */
 @media screen and (max-width: 650px) {
+
   .uk-navbar-nav {
     display: none;
   }
+
+  .mobile-menu-hamburger {
+    color: #fff;
+  }
+
 }
 
+/*
+ * ==============================
+ *  logo styling
+ * ==============================
+ */
 .uk-logo,
 .uk-logo:active,
 .uk-logo:focus {
@@ -32,4 +49,37 @@
 .uk-logo:hover {
   color: #fff;
   opacity: 0.9;
+}
+
+/*
+ * ==============================
+ *  mobile nav styling
+ * ==============================
+ */
+
+.uk-offcanvas-bar {
+    background-color: #fff;  
+}
+
+.uk-offcanvas-bar .uk-nav-default>li>a {
+  color: #999;
+}
+
+.uk-offcanvas-bar .uk-nav-default>li>a:hover,
+.uk-offcanvas-bar .uk-nav-default>li>a:active,
+.uk-offcanvas-bar .uk-nav-default>li>a:focus {
+  color: #333;
+}
+
+.uk-offcanvas-bar .uk-nav-default>li.uk-active>a {
+  color: #000;
+}
+
+/* hide mobile nav on large screens */
+@media screen and (min-width: 650px) {
+
+  .display-mobile-nav {
+     display: none; 
+  }
+
 }
