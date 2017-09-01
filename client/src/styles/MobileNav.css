@@ -1,0 +1,13 @@
+.uk-offcanvas-bar {
+    background-color: #fff;  
+}
+
+.uk-offcanvas-bar .uk-nav-default>li>a {
+  color: #999;
+}
+
+.uk-offcanvas-bar .uk-nav-default>li>a:hover,
+.uk-offcanvas-bar .uk-nav-default>li>a:active,
+.uk-offcanvas-bar .uk-nav-default>li>a:focus {
+  color: #333;
+}

@@ -1,6 +1,5 @@
 .uk-navbar-container:not(.uk-navbar-transparent) {
   background-color: #1e87f0;
-  /* box-shadow: 0 5px 15px rgba(0,0,0,.08);   FIXME: play around a bit with the shadow, otherwise just use uikit default  */
   box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px rgba(0,0,0,.14), 0 1px 10px rgba(0,0,0,.12);
 }
 
@@ -17,3 +16,20 @@
   opacity: 1;
 }
 
+@media screen and (max-width: 650px) {
+  .uk-navbar-nav {
+    display: none;
+  }
+}
+
+.uk-logo,
+.uk-logo:active,
+.uk-logo:focus {
+  color: #fff;
+}
+
+
+.uk-logo:hover {
+  color: #fff;
+  opacity: 0.9;
+}
