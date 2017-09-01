@@ -67,7 +67,11 @@ class Signin extends Component {
           <div className="uk-card-body">
             <form onSubmit={this.handleSubmit} className="uk-form-stacked">
               {this.state.invalidSubmission
-                ? <div className="uk-margin uk-text-danger uk-animation-slide-bottom">{this.state.submissionError}</div> 
+                ? <div 
+                    className="uk-margin uk-text-danger uk-animation-slide-bottom"
+                  >
+                    {this.state.submissionError}
+                  </div>
                 : ''
               }
               
