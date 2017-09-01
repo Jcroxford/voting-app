@@ -123,7 +123,7 @@ class Signup extends Component {
           </div>
 
           <div className="uk-card-body">
-            <form onSubmit={this.handleSubmit} className="uk-form-stacked">
+            <form onSubmit={this.handleSubmit} className="uk-form-stacked" autoComplete="off">
               {this.state.invalidSubmission
                 ? <div className={`uk-margin uk-text-danger ${this.state.invalidSubmission ? 'uk-animation-slide-bottom' : 'uk-animation-slide-top uk-animation-reverse'}`}>{this.state.submissionError}</div> 
                 : ''
@@ -138,6 +138,7 @@ class Signup extends Component {
                   placeholder="urAvgVoter"
                   value={this.state.username}
                   onChange={(e) => { this.checkUsernameAvailability(e); this.handleInputChange(e) }}
+                  autoFocus
                 />
               </div>
 

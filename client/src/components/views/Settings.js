@@ -128,6 +128,7 @@ class Settings extends Component {
                   placeholder="Prove yourself!"
                   value={this.state.passwordAttempt}
                   onChange={this.handleInputChange} 
+                  autoFocus
                 />
               </div>
       

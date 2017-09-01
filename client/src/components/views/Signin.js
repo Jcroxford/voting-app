@@ -80,6 +80,7 @@ class Signin extends Component {
                   placeholder="example@email.com"
                   value={this.state.email}
                   onChange={this.handleInputChange}
+                  autoFocus
                 />
               </div>
 
