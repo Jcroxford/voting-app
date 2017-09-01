@@ -17,12 +17,15 @@ class Signup extends Component {
       confirmPassword: '',
       invalidSubmission: false,
       invalidUsername: false,
+      usernameInUse: false,
       invalidEmail: false,
       passwordsMatch: true,
       submissionError: ''
     }
 
     this.handleInputChange = this.handleInputChange.bind(this)
+    this.checkUsername = this.checkUsername.bind(this)
+    this.isValidUsernameFormatting = this.isValidUsernameFormatting.bind(this)
     this.checkusernameAvailability = this.checkUsernameAvailability.bind(this)
     this.confirmPasswordsMatch = this.confirmPasswordsMatch.bind(this)
     this.checkEmailAvailability = this.checkEmailAvailability.bind(this)
@@ -34,12 +37,14 @@ class Signup extends Component {
   updateSubmissionStatus() {
     const {
       invalidUsername, 
+      usernameInUse,
       invalidEmail,
       passwordsMatch
     } = this.state
 
     let submissionError = ''
-    if (invalidUsername) { submissionError = 'Username Is Already In Use' }
+    if (usernameInUse) { submissionError = 'Username Is Already In Use' }
+    else if(invalidUsername) { submissionError = 'Use Only Letters or Numbers'}
     else if (invalidEmail) { submissionError = 'Email Is Already In Use' }
     else if(!passwordsMatch) { submissionError = 'Expected Passwords to Match' }
 
@@ -49,16 +54,34 @@ class Signup extends Component {
     this.setState({ invalidSubmission, submissionError })
   }
 
-  checkUsernameAvailability(e) {
+  checkUsername(e) {
+    const newUsername = e.target.value
+
+    if(this.isValidUsernameFormatting(newUsername)) {
+      return this.checkusernameAvailability(newUsername)
+    }
+  }
+
+  isValidUsernameFormatting(newUsername) {
+    const validUsernameCheck = /^[a-zA-Z0-9]*$/
+
+    const validUsername = validUsernameCheck.test(newUsername)
+
+    this.setState({ invalidUsername: !validUsername }, () => this.updateSubmissionStatus())
+    
+    return validUsername
+  }
+
+  checkUsernameAvailability(newUsername) {
     const self = this
 
-    if(e.target.value === '') { return }
+    if(newUsername === '') { return }
 
-    axios.get(`${baseRoute}/api/signup/usernameIsused/${e.target.value}`)
+    axios.get(`${baseRoute}/api/signup/usernameIsused/${newUsername}`)
       .then(response => {
         const {used} = response.data
 
-        self.setState({ invalidUsername: used }, () => self.updateSubmissionStatus())
+        self.setState({ usernameInUse: used }, () => self.updateSubmissionStatus())
       })
       .catch(err => console.log(err))
   }
@@ -125,7 +148,11 @@ class Signup extends Component {
           <div className="uk-card-body">
             <form onSubmit={this.handleSubmit} className="uk-form-stacked" autoComplete="off">
               {this.state.invalidSubmission
-                ? <div className={`uk-margin uk-text-danger ${this.state.invalidSubmission ? 'uk-animation-slide-bottom' : 'uk-animation-slide-top uk-animation-reverse'}`}>{this.state.submissionError}</div> 
+                ? <div 
+                    className={`uk-margin uk-text-danger ${this.state.invalidSubmission ? 'uk-animation-slide-bottom' : 'uk-animation-slide-top uk-animation-reverse'}`}
+                  >
+                    {this.state.submissionError}
+                  </div> 
                 : ''
               }
               
@@ -135,9 +162,9 @@ class Signup extends Component {
                   className={`uk-input ${this.state.invalidUsername ? 'uk-form-danger' : ''}`}
                   type="text"
                   name="username"
-                  placeholder="urAvgVoter"
+                  placeholder="can be numbers or letters"
                   value={this.state.username}
-                  onChange={(e) => { this.checkUsernameAvailability(e); this.handleInputChange(e) }}
+                  onChange={(e) => { this.checkUsername(e); this.handleInputChange(e) }}
                   autoFocus
                 />
               </div>
