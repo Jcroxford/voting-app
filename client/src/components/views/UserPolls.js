@@ -16,6 +16,7 @@ class UserPolls extends Component {
   getPolls() {
     const self = this
     const token = JSON.parse(localStorage.getItem('userData')).token
+
     axios.get(`${baseRoute}/api/user/polls/`, { headers: { authorization: token } })
       .then(response => self.setState({ polls: response.data.polls }))
       .catch(error => console.log(error))
@@ -24,6 +25,7 @@ class UserPolls extends Component {
   deletePoll(pollId) {
     const self = this
     const token = JSON.parse(localStorage.getItem('userData')).token
+
     axios.get(`${baseRoute}/api/user/poll/delete/${pollId}`, { headers: { authorization: token } })
       .then(response => {
         if(!response.data.success) { return }
@@ -45,13 +47,20 @@ class UserPolls extends Component {
           className="uk-card uk-card-default uk-margin-bottom uk-card-hover uk-animation-fade" 
           onClick={() => this.props.history.push(`/poll/${poll.id}`)}
         >
+          
           <div className="uk-card-body">
             {poll.title}
           </div>
 
           <div className="uk-card-footer">
-            <button className="uk-button uk-button-small uk-button-danger" onClick={() => this.deletePoll(poll.id)}>Delete</button>
-          </div> 
+            <button 
+              className="uk-button uk-button-small uk-button-danger" 
+              onClick={() => this.deletePoll(poll.id)}
+            >
+              Delete
+            </button>
+          </div>
+
         </div>
       </div>
     ))
@@ -71,7 +80,9 @@ class UserPolls extends Component {
       ? <div className="uk-text-center" ref="ukSpinner"></div>
       : <div>
           <div className="uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-grid">
+            
             {this.renderPolls()}
+
           </div>
         </div>
     )
