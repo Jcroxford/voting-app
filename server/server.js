@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser')
 const express = require('express')
 const favicon = require('serve-favicon')
+const helmet = require('helmet')
 const logger = require('morgan')
 const path = require('path')
 const cors = require('cors')
@@ -18,6 +19,7 @@ const testing = process.env.NODE_ENV === 'test'
 // middleware
 // app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')))
 if (!testing) { app.use(logger('dev')) } // prevent logging during mocha testing
+app.use(helmet())
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
