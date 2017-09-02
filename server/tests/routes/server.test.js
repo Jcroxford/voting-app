@@ -236,7 +236,7 @@ describe('user/authenticated routes', () => {
         .set('authorization', token)
         .send(poll)
         .expect(200)
-        .expect(res => expect(res.body).to.include({ success: 'poll created successfully' }))
+        .expect(res => expect(res.body).to.have.all.keys(['pollId', 'title']))
         .end(done)
     })
   })
