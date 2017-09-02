@@ -141,12 +141,14 @@ class Signup extends Component {
     return (
       <div className="uk-flex uk-flex-center">
         <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-small">
+          
           <div className="uk-card-header uk-card-primary">
             <h3 className="card-title">Sign Up</h3>
           </div>
 
           <div className="uk-card-body">
             <form onSubmit={this.handleSubmit} className="uk-form-stacked" autoComplete="off">
+              
               {this.state.invalidSubmission
                 ? <div 
                     className={`uk-margin uk-text-danger ${this.state.invalidSubmission ? 'uk-animation-slide-bottom' : 'uk-animation-slide-top uk-animation-reverse'}`}
@@ -157,9 +159,14 @@ class Signup extends Component {
               }
               
               <div className="uk-margin">
-                <label className="uk-form-label" htmlFor="username">Username</label>
+                <label 
+                  className={`uk-form-label ${this.state.usernameInUse ? 'uk-text-danger' : ''}`}
+                  htmlFor="username"
+                >
+                  Username
+                </label>
                 <input
-                  className={`uk-input ${this.state.invalidUsername ? 'uk-form-danger' : ''}`}
+                  className={`uk-input ${this.state.usernameInUse ? 'uk-form-danger' : ''}`}
                   type="text"
                   name="username"
                   placeholder="can be numbers or letters"
@@ -170,7 +177,12 @@ class Signup extends Component {
               </div>
 
               <div className="uk-margin">
-                <label className="uk-form-label" htmlFor="email">Email</label>
+                <label
+                  className={`uk-form-label ${this.state.invalidEmail ? 'uk-text-danger' : ''}`}
+                  htmlFor="email"
+                >
+                  Email
+                </label>
                 <input
                   className={`uk-input ${this.state.invalidEmail ? 'uk-form-danger' : ''}`}
                   type="email" 
@@ -182,7 +194,12 @@ class Signup extends Component {
               </div>
 
               <div className="uk-margin">
-                <label className="uk-form-label" htmlFor="password">Password</label>
+                <label
+                  className={`uk-form-label ${this.state.passwordsMatch ? '' : 'uk-text-danger'}`}
+                  htmlFor="password"
+                >
+                  Password
+                </label>
                 <input 
                   className={`uk-input ${this.state.passwordsMatch ? '' : 'uk-form-danger'}`}
                   type="password" 
@@ -194,7 +211,12 @@ class Signup extends Component {
               </div>
 
               <div className="uk-margin">
-                <label className="uk-form-label" htmlFor="confirmPassword">Confirm Password</label>
+                <label 
+                  className={`uk-form-label ${this.state.passwordsMatch ? '' : 'uk-text-danger'}`}
+                  htmlFor="confirmPassword"
+                >
+                  Confirm Password
+                </label>
                 <input
                   className={`uk-input ${this.state.passwordsMatch ? '' : 'uk-form-danger'}`}
                   type="password"
@@ -208,8 +230,10 @@ class Signup extends Component {
               <div className="uk-margin">
                 <button className="uk-button uk-button-primary">Create Account</button>
               </div>
+
             </form>
           </div>
+
         </div>
       </div>
     )

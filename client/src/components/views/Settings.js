@@ -94,6 +94,7 @@ class Settings extends Component {
 
           <div className="uk-card-body">
             <form onSubmit={this.handleSubmit} className="uk-form-stacked">
+              
               {
                 this.state.invalidSubmission
                   ? <div 
@@ -116,13 +117,13 @@ class Settings extends Component {
 
               <div className="uk-margin">
                 <label 
-                  className="uk-form-label" 
+                  className={`uk-form-label ${this.state.currentPasswordIsCorrect ? '' : 'uk-text-danger'}`}
                   htmlFor="passwordAttempt"
                 >
                   Current Password
                 </label>
                 <input 
-                  className="uk-input" 
+                  className={`uk-input ${this.state.currentPasswordIsCorrect ? '' : 'uk-form-danger'}`}
                   type="password" 
                   name="passwordAttempt"
                   placeholder="Prove yourself!"
@@ -133,7 +134,12 @@ class Settings extends Component {
               </div>
       
               <div className="uk-margin">
-                <label className="uk-form-label" htmlFor="newPassword">New Password</label>
+                <label 
+                  className={`uk-form-label ${this.state.newPasswordsMatch ? '' : 'uk-text-danger'}`}
+                  htmlFor="newPassword"
+                >
+                  New Password
+                </label>
                 <input 
                   className={`uk-input ${this.state.newPasswordsMatch ? '' : 'uk-form-danger'}`}
                   type="password" 
@@ -146,7 +152,7 @@ class Settings extends Component {
 
               <div className="uk-margin">
                 <label 
-                  className="uk-form-label" 
+                  className={`uk-form-label ${this.state.newPasswordsMatch ? '' : 'uk-text-danger'}`}
                   htmlFor="confirmNewPassword"
                 >
                   Confirm New Password
@@ -164,6 +170,7 @@ class Settings extends Component {
               <div className="uk-margin">
                 <button className="uk-button uk-button-primary">Change Password</button>
               </div>
+
             </form>
           </div>
         </div>

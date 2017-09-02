@@ -60,6 +60,7 @@ class Signin extends Component {
     return (
       <div className="uk-flex uk-flex-center">
         <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-small">
+          
           <div className="uk-card-header uk-card-primary">
             <h3 className="card-title">Sign In</h3>
           </div>
@@ -102,8 +103,10 @@ class Signin extends Component {
               <div className="uk-margin">
                 <button className="uk-button uk-button-primary">Sign In</button>
               </div>
+
             </form>
           </div>
+          
         </div>
       </div>
     )
