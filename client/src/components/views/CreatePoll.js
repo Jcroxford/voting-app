@@ -20,7 +20,9 @@ class CreatePoll extends Component {
   }
 
   handleOptionChange(e) {
-    const maxInputSize = 72
+    // 26 char limit for inputs is based
+    // the most frequent cut off point in web responsiveness view
+    const maxInputSize = 26
 
     if(e.target.value.length > maxInputSize) { return }
     
@@ -57,7 +59,10 @@ class CreatePoll extends Component {
   }
 
   handleTitleChange(e) {
+    // 72 char limit is arbitrary
     const maxInputSize = 72
+
+    console.log(maxInputSize);
 
     if(e.target.value.length > maxInputSize) { return }
 
@@ -85,7 +90,7 @@ class CreatePoll extends Component {
   render() {
     return (
       <div className="uk-flex uk-flex-center">
-        <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-medium">
+        <div className="uk-card uk-card-default uk-width-1-1@xs uk-width-1-2@s uk-width-1-3@l uk-animation-slide-top-medium">
           <div className="uk-card-header uk-card-primary">
             <h3 className="card-title">Create Poll</h3>
           </div>
