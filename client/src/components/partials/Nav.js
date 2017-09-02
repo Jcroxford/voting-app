@@ -9,7 +9,6 @@ class Nav extends Component {
     super(props)
 
     this.handleSignout = this.handleSignout.bind(this)
-    this.renderNavLinks = this.renderNavLinks.bind(this)
   }
 
   handleSignout() {
