@@ -8,7 +8,33 @@ class Nav extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      routes: [
+        {
+          title: 'Home',
+          path: '/',
+          show: 'always'
+        },
+        {
+          title: 'Polls',
+          path: '/polls',
+          show: 'always'
+        },
+        {
+          title: 'Sign In',
+          path: '/signin',
+          show: 'whenNotAuthed'
+        },
+        {
+          title: 'Sign In',
+          path: '/signin',
+          show: 'whenNotAuthed'
+        }
+      ]
+    }
+
     this.handleSignout = this.handleSignout.bind(this)
+    this.renderNavLinks = this.renderNavLinks.bind(this)
   }
 
   handleSignout() {
@@ -85,8 +111,14 @@ class Nav extends Component {
               }
             </ul>
 
-            {/* references MobileNav component */}
-            <a className="uk-margin-small-right display-mobile-nav" type="button" ref="ukToggle"><span ref="ukMenu" className="mobile-menu-hamburger"></span></a>
+            {/* toggles mobile nav */}
+            <a 
+              className="uk-margin-small-right display-mobile-nav"
+              type="button"
+              ref="ukToggle"
+            >
+              <span ref="ukMenu" className="mobile-menu-hamburger"></span>
+            </a>
 
           </div>
         </nav>
