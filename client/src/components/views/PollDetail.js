@@ -110,7 +110,8 @@ class PollDetail extends Component {
       pollOptions.length === 0
       ? <div>Loading</div>
       : <div className="uk-flex uk-flex-center">
-          <div className="uk-card uk-card-default uk-width-1-2@s uk-width-1-3@m uk-animation-slide-top-small">
+          <div className="uk-card uk-card-default uk-width-large@s uk-width-xlarge@l uk-animation-slide-top-small">
+            
             <div className="uk-card-header uk-card-primary">
               <h3 className="uk-card-title">{this.props.match.params.pollTitle}</h3>
             </div>
@@ -120,8 +121,9 @@ class PollDetail extends Component {
             </div>
 
             <div className="uk-card-footer">
-              <div className="poll-link">{`${baseRoute}${encodeURI(this.props.match.url)}`}</div>
+              <div className="poll-link">{`localhost:3000${encodeURI(this.props.match.url)}`}</div> {/*FIXME: repalce with heroku base link when deploying*/}
             </div>
+            
           </div>
         </div>
     )

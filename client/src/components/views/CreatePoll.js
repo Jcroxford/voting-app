@@ -91,6 +91,7 @@ class CreatePoll extends Component {
     return (
       <div className="uk-flex uk-flex-center">
         <div className="uk-card uk-card-default uk-width-1-1@xs uk-width-1-2@s uk-width-1-3@l uk-animation-slide-top-medium">
+          
           <div className="uk-card-header uk-card-primary">
             <h3 className="card-title">Create Poll</h3>
           </div>
@@ -118,8 +119,10 @@ class CreatePoll extends Component {
               <div className="uk-margin">
                 <button className="uk-button uk-button-primary">Create Poll</button>
               </div>
+
             </form>
           </div>
+          
         </div>
       </div>
     )
