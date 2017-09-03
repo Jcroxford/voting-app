@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Link, withRouter} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 
 import UserPolls from './UserPolls'
 
@@ -10,6 +10,19 @@ class Home extends Component {
     super(props)
 
     this.state = { username: '' }
+
+    this.updatePageAttributes = this.updatePageAttributes.bind(this)
+  }
+
+  updatePageAttributes() {
+    if(!this.props.authenticated) {
+      this.refs.ukScrollspy.setAttribute('uk-scrollspy', 'target: > div; cls:uk-animation-scale-up uk-transform-origin-bottom-right; delay: 100')
+      this.refs.ukIconBolt.setAttribute('uk-icon', 'icon: bolt; ratio: 5;')
+      this.refs.ukGithub.setAttribute('uk-icon', 'icon: github; ratio: 5;')
+      this.refs.ukDatabase.setAttribute('uk-icon', 'icon: database; ratio: 5;')
+    } else {
+      this.refs.ukGrid.setAttribute('uk-grid', '')
+    }
   }
 
   componentWillMount() {
@@ -21,10 +34,11 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    this.refs.ukScrollspy.setAttribute('uk-scrollspy', 'target: > div; cls:uk-animation-scale-up uk-transform-origin-bottom-right; delay: 100')
-    this.refs.ukIconBolt.setAttribute('uk-icon', 'icon: bolt; ratio: 5;')
-    this.refs.ukGithub.setAttribute('uk-icon', 'icon: github; ratio: 5;')
-    this.refs.ukDatabase.setAttribute('uk-icon', 'icon: database; ratio: 5;')
+    this.updatePageAttributes()
+  }
+
+  componentDidUpdate() {
+    this.updatePageAttributes()
   }
 
   render() {
@@ -32,7 +46,7 @@ class Home extends Component {
       !this.props.authenticated
         ? <div>
 
-             <div className="uk-section uk-section-media uk-background-cover banner-image">
+             <div className="uk-section uk-section-large uk-section-media uk-background-cover banner-image">
               <div className="uk-container banner-info">
 
                 <div className="uk-flex uk-flex-center uk-light">
@@ -79,9 +93,28 @@ class Home extends Component {
             
           </div>
         : <div>
-            <div>Hello {this.state.username}!</div>
-            <Link to={'/createPoll'}>Create New Poll</Link>
-            <br />
+
+            <div className="uk-flex uk-flex-center uk-text-center">
+              <div className="uk-section uk-section-muted uk-margin">
+                <div className="uk-container">
+                  
+                  <h3 className="">Hello {this.state.username}</h3>
+
+                  <div className="uk-grid-match uk-child-width-1-1@m uk-text-center" ref="ukGrid">
+                    <div>
+                      <button 
+                        className="uk-button uk-button-primary"
+                        onClick={() => this.props.history.push('/createPoll')}
+                      >
+                        Create New Poll
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
             <UserPolls />
           </div>
     )

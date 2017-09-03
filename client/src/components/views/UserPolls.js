@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 
 import {baseRoute} from '../../utils/api'
@@ -60,7 +61,7 @@ class UserPolls extends Component {
               className="uk-button uk-button-primary uk-button-small uk-margin-right"
               onClick={() => this.props.history.push(`/poll/${poll.id}/${poll.title}`)}
             >
-              View poll
+              View
             </button>
 
             <button 
@@ -99,4 +100,4 @@ class UserPolls extends Component {
   }
 }
 
-export default UserPolls
+export default withRouter(UserPolls)
