@@ -13,7 +13,7 @@ require('./config/config')
 
 // environment variables
 const app = express()
-const port = process.env.port
+const port = process.env.port || process.env.PORT
 const testing = process.env.NODE_ENV === 'test'
 
 // middleware
