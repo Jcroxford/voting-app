@@ -5,6 +5,7 @@ yarn.lock
 
 # dev tools
 server/config/config.json
+server/config/secret.js
 
 # editior settings
 .vscode
