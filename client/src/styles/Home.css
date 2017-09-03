@@ -1,0 +1,66 @@
+/*
+ * ==============================
+ *  public banner styling
+ * ==============================
+ */
+.banner-info {
+  background-color: rgba(34,34,34,0.8);
+  padding: 15px;
+}
+
+@media screen and (max-width: 650px) {
+
+  .banner-info {
+    width: 75%
+  }
+
+}
+
+@media screen and (min-width: 650px) {
+
+  .banner-info {
+    width: 40%;  
+  }
+
+}
+
+.uk-light p {
+  color: #fff;
+}
+
+.banner-image {
+  background-image: url('../photos/landingPagePhoto.jpg')
+}
+
+/*
+ * ==============================
+ *  public basic info styling
+ * ==============================
+ */
+ .bolt-icon {
+  color: #FFD600;
+}
+
+.github-icon {
+  color: #424242;
+}
+
+.database-icon {
+  color: #9E9E9E;
+}
+
+.bolt-icon,
+.github-icon,
+.database-icon {
+  cursor: default;
+}
+
+/*
+ * ==============================
+ *  public basic info styling
+ * ==============================
+ */
+.uk-section-muted {
+   background-color: #ddd; 
+    padding: 30px 100px;  
+}

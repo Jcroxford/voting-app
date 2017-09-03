@@ -15,21 +15,21 @@ const requireLogin = passport.authenticate('local', { session: false })
 const { generateJwtForUser } = require('../utils/jwtUtils.js')
 
 // *** User routes ***
-router.get('/api/signup/emailIsUsed/:email', (req, res) => {
+router.get('/signup/emailIsUsed/:email', (req, res) => {
   models.Users
     .findOne({ where: { email: req.params.email } })
     .then(user => res.json({ used: user ? true : false }))
     .catch(error => res.status(500).json({ error: 'internal error occured'}))
 })
 
-router.get('/api/signup/usernameIsUsed/:username', (req, res) => {
+router.get('/signup/usernameIsUsed/:username', (req, res) => {
   models.Users
     .findOne({ where: { username: req.params.username } })
     .then(user => res.json({ used: user ? true : false }))
     .catch(error => res.status(500).json({ error: 'internal error occured'}))
 })
 
-router.post('/api/signup', (req, res) => {
+router.post('/signup', (req, res) => {
   const {username, email, password} = req.body
 
   // validate body info
@@ -79,14 +79,14 @@ router.post('/api/signup', (req, res) => {
     })
 })
 
-router.post('/api/signin', requireLogin, (req, res) => {
+router.post('/signin', requireLogin, (req, res) => {
   res.json({ 
     token: generateJwtForUser(req.user),
     username: req.user.username
   })
 })
 
-router.post('/api/user/password/change', requireAuth, (req, res) => {
+router.post('/user/password/change', requireAuth, (req, res) => {
   const {passwordAttempt, newPassword} = req.body
 
   // // verify user and password
@@ -121,7 +121,7 @@ router.post('/api/user/password/change', requireAuth, (req, res) => {
     })
 })
 
-router.post('/api/user/createPoll', requireAuth, (req, res) => {
+router.post('/user/createPoll', requireAuth, (req, res) => {
   // verify user and insert
   models.Polls
     .create({
@@ -132,11 +132,11 @@ router.post('/api/user/createPoll', requireAuth, (req, res) => {
     {
       include: [models.PollOptions]
     })
-    .then(() => res.json({ success: 'poll created successfully' }))
+    .then(poll => res.json({ pollId: poll.id, title: poll.title }))
     .catch(error => console.log(error))
 })
 
-router.get('/api/user/polls', requireAuth, (req, res) => {
+router.get('/user/polls', requireAuth, (req, res) => {
   models.Polls
     .findAll({
       where: { UserId: req.user.id },
@@ -149,7 +149,7 @@ router.get('/api/user/polls', requireAuth, (req, res) => {
     })
 })
 
-router.get('/api/user/poll/delete/:pollId', requireAuth, (req, res) => {
+router.get('/user/poll/delete/:pollId', requireAuth, (req, res) => {
   models.Polls
     .findOne({
       where: {
@@ -178,11 +178,12 @@ router.get('/api/user/poll/delete/:pollId', requireAuth, (req, res) => {
 })
 
 // *** public routes ***
-router.get('/api/polls/:page', (req, res) => {
+router.get('/polls/:page', (req, res) => {
+  const pollsPerPage = 36
   models.Polls
     .findAndCountAll({
-      limit: 12,
-      offset: (req.params.page - 1) * 12,
+      limit: pollsPerPage,
+      offset: (req.params.page - 1) * pollsPerPage,
       attributes: ['id', 'title']
     })
     .then(results => {
@@ -197,7 +198,7 @@ router.get('/api/polls/:page', (req, res) => {
     })
 })
 
-router.get('/api/polls/detail/:pollId', (req, res) => {
+router.get('/polls/detail/:pollId', (req, res) => {
   models.PollOptions
     .findAll({
       where: {PollId: req.params.pollId},
@@ -210,7 +211,7 @@ router.get('/api/polls/detail/:pollId', (req, res) => {
     })
 })
 
-router.get('/api/poll/vote/:pollOptionId', (req, res) => {
+router.get('/poll/vote/:pollOptionId', (req, res) => {
   models.PollOptions
     .increment('voteCount', { where: { id: req.params.pollOptionId } })
     .then(results => {

@@ -11,10 +11,13 @@ This is a basic Node, Express, and PostgreSQL app built to fulfill the [FreeCode
 7. As an unauthenticated or authenticated user, I can see the results of polls in chart form. (This could be implemented using Chart.js or Google Charts.)
 
 ## How to Use
-more info will be provided as development progress
+1. Clone the repo and run npm install in buth the source and client directories. 
+2. From command line, use the command `npm run dev` to start rest api server from root directory.
+   * for details about current rest api endpoints, look [here](./apiReference.md)
+3. From another command line, cd into client directory and use the command `yarn start` to start up the webpack dev server for the client.
 
 ## Dev Notes
-A config.json file must be provided in order for this project to run locally. 
+A config.json file must be provided in the config directory in order for this project to run locally. 
 
 The config file must contain the following variables for both tseting and development
 * **port** the port you wish to use to host the app locally
@@ -25,7 +28,7 @@ The config file must contain the following variables for both tseting and develo
 * **dialect** database being used in testing(this should be postgreSQL)
 * **secret** secret used for generating jwt tokens
 
-**Example config**
+**Example config.json File**
 ```json
 {
   "test": {
@@ -34,8 +37,7 @@ The config file must contain the following variables for both tseting and develo
     "database": "voting-app-test",
     "dbUsername": "root",
     "dbPassword": "root",
-    "dialect": "postgres",
-    "secret": "some secret value"
+    "dialect": "postgres"
   },
   "development": {
     "port": 3000,
@@ -43,48 +45,22 @@ The config file must contain the following variables for both tseting and develo
     "database": "voting-app-dev",
     "dbUsername": "root",
     "dbPassword": "root",
-    "dialect": "postgres",
-    "secret": "some secret value"
+    "dialect": "postgres"
   }
 }
 ```
 
-This project was built using PostgreSQL. You must have postgres installed in order to run the project locally. 
+You must also include a file in the config directory called `secret.js`. This file must contain the secret you wish to use to hash a user's passwords.
+
+**Example secret.js File**
+```javascript
+module.exports.secret = 'some secret value'
+```
+
+This project was built using PostgreSQL. It's reccomended you use and have postgres installed when running project locally.
+
+**Note** Make sure `client/src/utils/api.js` has the correct local route for local api server.
+
 
 ## TODOS
-* get a favicon
-* figure out how to use debug npm module
-* public and views folders are not currently in use. Remove if we end up never needing them
-* learn about how to implement session storage and use it in this app as a means to keep track of polls that a user has voted on.
-* update routes to follow a more traditional rest api design? (if done, update tests, routes, & docs with the new routes)
-* add helment.js to app to secure all the things
-* refactor routes/index and models/Users so that Users model contains more of the logic?
-* add toggle for hidden/visible text during password steps client side
-* add details to github when deploying app to heroku
-
-## Limitations/implementations to Consider
-* user should only be able to vote on a poll once(check and store ip address?) (look into session storage to accomplish this probably) [disussion](https://forum.freecodecamp.org/t/voting-app-preventing-non-logged-in-users-from-voting-twice/35489/2)
-* add sharing to social media? (twitter, facebook maybe prepoulate stuff)
-* passport authentication for github? twitter? 
-* implement real time chart updating?
-* should duplicate poll's be prevented? not entirely conviced it's bad
-* change create user to signup accross app
-* executive decision has been made that until opinions changed, password strength/requirements will only be assessed on the client side
-* I am starting /api/polls & /api/user/polls routes with pagination but considering trying to use lazy loading to make a more fluid
-* setup https locally?
-* update rest endpoints to use appropriate methods (get, post, patch, delete)
-
-## Limitations/implementations to Consider front end
-* 404 page
-* prevent form submit wiht invalid input
-* create password restrictions need fleshing out
-* validate email
-* use propTypes where needed
-* password restrictions need to be added to signup
-* confirm username and password are not in use on signup
-* error message needs to be added for invalid signin attempt
-* if redirecting due to invalid auth and then user is authed, redirect to the page they were trying to access before?
-* settings axios request could possibly be refactored into a function to be more dry
-* handle errors better client side
-* refactor certain pieces to their own functional componets? (eg pollDetail for handling [on click](https://stackoverflow.com/questions/29810914/react-js-onclick-cant-pass-value-to-method))
-* add a readme to fron end maybe?
+* add details to github when deploying app to heroku(meaning like the url and stuff)

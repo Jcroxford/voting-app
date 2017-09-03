@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
+import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 
 import {baseRoute} from '../../utils/api'
@@ -17,6 +17,7 @@ class UserPolls extends Component {
   getPolls() {
     const self = this
     const token = JSON.parse(localStorage.getItem('userData')).token
+
     axios.get(`${baseRoute}/api/user/polls/`, { headers: { authorization: token } })
       .then(response => self.setState({ polls: response.data.polls }))
       .catch(error => console.log(error))
@@ -25,12 +26,14 @@ class UserPolls extends Component {
   deletePoll(pollId) {
     const self = this
     const token = JSON.parse(localStorage.getItem('userData')).token
+
     axios.get(`${baseRoute}/api/user/poll/delete/${pollId}`, { headers: { authorization: token } })
       .then(response => {
         if(!response.data.success) { return }
 
         const polls = self.state.polls
-        const deletedPollIndex = polls.indexOf(poll => poll.id === pollId)
+        const deletedPollIndex = polls.findIndex(poll => poll.id === pollId)
+
         polls.splice(deletedPollIndex, 1)
 
         this.setState({ polls })
@@ -41,10 +44,36 @@ class UserPolls extends Component {
 
   renderPolls() {
     return this.state.polls.map(poll => (
-      <li key={poll.id}>
-        <strong>title</strong><Link to={`/poll/${poll.id}`}> {poll.title}</Link>
-        <button onClick={() => this.deletePoll(poll.id)}>Delete</button>
-      </li>
+      <div key={poll.id}>
+        <div 
+          className="uk-card uk-card-default uk-margin-bottom uk-card-hover uk-animation-fade" 
+        >
+          
+          <div 
+            className="uk-card-body"
+            onClick={() => this.props.history.push(`/poll/${poll.id}/${poll.title}`)}
+          >
+            {poll.title}
+          </div>
+
+          <div className="uk-card-footer">
+            <button 
+              className="uk-button uk-button-primary uk-button-small uk-margin-right"
+              onClick={() => this.props.history.push(`/poll/${poll.id}/${poll.title}`)}
+            >
+              View
+            </button>
+
+            <button 
+              className="uk-button uk-button-small uk-button-danger" 
+              onClick={() => this.deletePoll(poll.id)}
+            >
+              Delete
+            </button>
+          </div>
+
+        </div>
+      </div>
     ))
   }
   
@@ -59,14 +88,16 @@ class UserPolls extends Component {
   render() {
     return (
       this.state.polls.length === 0
-      ? <div>user polls page</div>
+      ? <div className="uk-text-center" ref="ukSpinner"></div>
       : <div>
-          <ul>
+          <div className="uk-child-width-1-2@s uk-child-width-1-3@m uk-child-width-1-4@l uk-grid">
+            
             {this.renderPolls()}
-          </ul>
+
+          </div>
         </div>
     )
   }
 }
 
-export default UserPolls
+export default withRouter(UserPolls)

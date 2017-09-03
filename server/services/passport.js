@@ -5,6 +5,7 @@ const JwtStrategy = require('passport-jwt').Strategy
 const LocalStrategy = require('passport-local')
 
 const models = require('../models/index')
+const secret = require('../config/secret').secret
 
 // *** Local auth strategy ***
 const localOptions = { usernameField: 'email' }
@@ -29,7 +30,7 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
 // *** jwt auth strategy ***
 const jwtOptions = {
   jwtFromRequest: ExtractJwt.fromHeader('authorization'),
-  secretOrKey: process.env.secret
+  secretOrKey: secret
 }
 
 // payload == decoded jwt doken (if it exists)

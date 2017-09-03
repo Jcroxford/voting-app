@@ -1,0 +1,7 @@
+.poll-link {
+  font-family: 'Roboto Mono', monospace;
+  font-size: 12px;  
+  word-wrap: break-word;
+  padding: 2px 6px;
+  background-color: #f8f8f8;
+}
