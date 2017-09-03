@@ -17,7 +17,7 @@ if (process.env.environment === 'development' || process.env.environment === 'te
     }
   })
 } else {
-  sequelize = new Sequelize(process.env.DATABASE_URL)
+  sequelize = new Sequelize(process.env.DATABASE_URL, {logging: false})
 }
 
 // load schema modules

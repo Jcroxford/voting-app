@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "A full stack voting app built using React, Node, and PostgreSQL",
   "main": "server.js",
+  "engines": {
+    "node": "8.4.0",
+    "npm": "5.3.0"
+  },
   "scripts": {
     "start": "node server/server.js",
     "dev": "nodemon server/server.js",
