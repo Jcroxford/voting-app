@@ -283,7 +283,7 @@ describe('user/authenticated routes', () => {
 
     it('should return error if not given a proper jwt authorization', (done) => {
       request(app)
-        .get(`/api/user/poll/delete/${pollOptionId}`)
+        .delete(`/api/user/poll/delete/${pollOptionId}`)
         .set('authorization', `fake${token}`)
         .expect(401)
         .expect(res => expect(res.unauthorized).to.be.true)
@@ -294,7 +294,7 @@ describe('user/authenticated routes', () => {
       pollOptionId = 0
 
       request(app)
-        .get(`/api/user/poll/delete/${pollOptionId}`)
+        .delete(`/api/user/poll/delete/${pollOptionId}`)
         .set('authorization', token)
         .expect(401)
         .expect(res => expect(res.body).to.include({ error: 'insufficient access to poll or poll does not exist' }))

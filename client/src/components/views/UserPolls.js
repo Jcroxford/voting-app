@@ -27,7 +27,7 @@ class UserPolls extends Component {
     const self = this
     const token = JSON.parse(localStorage.getItem('userData')).token
 
-    axios.get(`${baseRoute}/api/user/poll/delete/${pollId}`, { headers: { authorization: token } })
+    axios.delete(`${baseRoute}/api/user/poll/delete/${pollId}`, { headers: { authorization: token } })
       .then(response => {
         if(!response.data.success) { return }
 

@@ -149,7 +149,7 @@ router.get('/user/polls', requireAuth, (req, res) => {
     })
 })
 
-router.get('/user/poll/delete/:pollId', requireAuth, (req, res) => {
+router.delete('/user/poll/delete/:pollId', requireAuth, (req, res) => {
   models.Polls
     .findOne({
       where: {
