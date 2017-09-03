@@ -1,1 +1,1 @@
-export const baseRoute = 'http://localhost:3030'
+export const baseRoute = 'https://votehub-app.herokuapp.com'
