@@ -30,7 +30,7 @@ class CreatePoll extends Component {
     const optionIndex = parseInt(e.target.name.replace(/option/, ''))
     const options = this.state.options
 
-    options[optionIndex].pollText = e.target.value
+    options[optionIndex].pollText = e.target.value.trim()
 
     // dynamically add extra poll if needed
     if(optionIndex === options.length - 1) { options.push({ pollText: '' }) }
@@ -66,7 +66,7 @@ class CreatePoll extends Component {
 
     if(e.target.value.length > maxInputSize) { return }
 
-    this.setState({ title: e.target.value })
+    this.setState({ title: e.target.value.trim() })
   }
 
   handleSubmit(e) {
