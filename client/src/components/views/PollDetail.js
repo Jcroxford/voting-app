@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {withRouter} from 'react-router-dom'
 import axios from 'axios'
 
 import PollChart from '../partials/PollChart'
@@ -104,6 +105,11 @@ class PollDetail extends Component {
     this.setState({ userHasVoted })
   }
 
+  componentDidUpdate() {
+    if(this.state.pollOptions.length > 0) {
+      this.refs.ukIconBack.setAttribute('uk-icon', 'icon: arrow-left; ratio: 2;')
+    }
+  }
   render() {
     const {pollOptions, userHasVoted} = this.state
     return (
@@ -113,7 +119,10 @@ class PollDetail extends Component {
           <div className="uk-card uk-card-default uk-width-large@s uk-width-xlarge@l uk-animation-slide-top-small">
             
             <div className="uk-card-header uk-card-primary">
-              <h3 className="uk-card-title">{this.props.match.params.pollTitle}</h3>
+              <h3 className="uk-card-title">
+                <span ref="ukIconBack" onClick={() => this.props.history.push('/polls')}></span>
+                {this.props.match.params.pollTitle}
+              </h3>
             </div>
             
             <div className="uk-card-body">
@@ -130,4 +139,4 @@ class PollDetail extends Component {
   }
 }
 
-export default PollDetail
+export default withRouter(PollDetail)
