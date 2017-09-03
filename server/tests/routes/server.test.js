@@ -78,7 +78,7 @@ describe('user/authenticated routes', () => {
       }
 
       request(app)
-        .post('/api/signup')
+        .put('/api/signup')
         .send(user)
         .expect(400)
         .expect(res => expect(res.body).to.include({error: 'invalid input'}))
@@ -89,7 +89,7 @@ describe('user/authenticated routes', () => {
       const user = users[0]
 
       request(app)
-        .post('/api/signup')
+        .put('/api/signup')
         .send(user)
         .expect(400)
         .expect(res => expect(res.body).to.include({error: 'username or email in use'}))
@@ -104,7 +104,7 @@ describe('user/authenticated routes', () => {
       }
 
       request(app)
-        .post('/api/signup')
+        .put('/api/signup')
         .send(user)
         .expect(200)
         .expect(res => expect(res.body).to.have.all.keys(['token', 'username']))

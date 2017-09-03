@@ -29,7 +29,7 @@ router.get('/signup/usernameIsUsed/:username', (req, res) => {
     .catch(error => res.status(500).json({ error: 'internal error occured'}))
 })
 
-router.post('/signup', (req, res) => {
+router.put('/signup', (req, res) => {
   const {username, email, password} = req.body
 
   // validate body info
