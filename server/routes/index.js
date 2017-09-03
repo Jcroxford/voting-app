@@ -121,7 +121,7 @@ router.post('/user/password/change', requireAuth, (req, res) => {
     })
 })
 
-router.post('/user/createPoll', requireAuth, (req, res) => {
+router.put('/user/createPoll', requireAuth, (req, res) => {
   // verify user and insert
   models.Polls
     .create({

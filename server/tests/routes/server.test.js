@@ -223,7 +223,7 @@ describe('user/authenticated routes', () => {
     it('should return error if route is not authenticated', (done) => {
       // does not have authorization header attached
       request(app)
-        .post('/api/user/createPoll')
+        .put('/api/user/createPoll')
         .send(poll)
         .expect(401)
         .expect(res => expect(res.unauthorized).to.be.true)
@@ -232,7 +232,7 @@ describe('user/authenticated routes', () => {
 
     it('should create a poll if given a valid jwt', (done) => {
       request(app)
-        .post('/api/user/createPoll')
+        .put('/api/user/createPoll')
         .set('authorization', token)
         .send(poll)
         .expect(200)

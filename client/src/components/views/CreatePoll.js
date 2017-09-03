@@ -30,7 +30,7 @@ class CreatePoll extends Component {
     const optionIndex = parseInt(e.target.name.replace(/option/, ''))
     const options = this.state.options
 
-    options[optionIndex].pollText = e.target.value.trim()
+    options[optionIndex].pollText = e.target.value
 
     // dynamically add extra poll if needed
     if(optionIndex === options.length - 1) { options.push({ pollText: '' }) }
@@ -66,14 +66,19 @@ class CreatePoll extends Component {
 
     if(e.target.value.length > maxInputSize) { return }
 
-    this.setState({ title: e.target.value.trim() })
+    this.setState({ title: e.target.value })
   }
 
   handleSubmit(e) {
     e.preventDefault()
 
-    const title = this.state.title
-    const options = this.state.options.filter(option => option.pollText !== '')
+    const title = this.state.title.trim()
+    const options = this.state.options
+      .filter(option => option.pollText !== '')
+      .map(option => {
+        option.pollText = option.pollText.trim()
+        return option
+      })
 
     if(!title) { return alert('please provide a title for your poll')}
     if(options.length < 2) { return alert('Please provide at least 2 poll options') }
@@ -82,7 +87,7 @@ class CreatePoll extends Component {
     const token = JSON.parse(localStorage.getItem('userData')).token
     const config = { headers: { authorization: token } }
 
-    axios.post(`${baseRoute}/api/user/createPoll`, data, config)
+    axios.put(`${baseRoute}/api/user/createPoll`, data, config)
       .then(response => this.props.history.push(`/poll/${response.data.pollId}/${response.data.title}`))
       .catch(error => console.log(error))
   }
