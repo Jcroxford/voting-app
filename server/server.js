@@ -24,9 +24,9 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.use('/', router)
+app.use('/api', router)
 
-// catch all (404) route handler
+// serve up front end
 app.use((req, res) => {
   res.status(404).send('404 page not found')
 })
