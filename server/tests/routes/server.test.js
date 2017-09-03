@@ -301,17 +301,8 @@ describe('user/authenticated routes', () => {
         .end(done)
     })
 
-    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
-      request(app)
-        .get(`/api/poll/vote/${pollOptionId}`)
-        .expect(200)
-        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
-        .end(done)
-    })
-
     afterEach(destroyPolls)
   })
-// should return success value if user is authorized and attempts to delete one of their own polls
 
 })
 
@@ -370,7 +361,7 @@ describe('global/public routes', () => {
     afterEach(destroyPolls)
   })
 
-  describe('/api/poll/vote/:pollOptionId', () => {
+  describe('/api/poll/vote/', () => {
     beforeEach(populatePolls)
 
     let pollOptionId
@@ -385,12 +376,27 @@ describe('global/public routes', () => {
     })
 
     it('should return error if given an invalid poll option id', (done) => {
-      pollOptionId = 0
+      const body ={
+        pollOptionId: 0
+      } 
 
       request(app)
-        .get(`/api/poll/vote/${pollOptionId}`)
+        .post('/api/poll/vote/')
+        .send(body)
         .expect(400)
         .expect(res => expect(res.body).to.include({ error: 'poll option does not exist' }))
+        .end(done)
+    })
+
+    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
+      const body = {
+        pollOptionId
+      }
+      request(app)
+        .post('/api/poll/vote/')
+        .send(body)
+        .expect(200)
+        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
         .end(done)
     })
 

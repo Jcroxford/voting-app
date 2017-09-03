@@ -211,9 +211,9 @@ router.get('/polls/detail/:pollId', (req, res) => {
     })
 })
 
-router.get('/poll/vote/:pollOptionId', (req, res) => {
+router.post('/poll/vote/', (req, res) => {
   models.PollOptions
-    .increment('voteCount', { where: { id: req.params.pollOptionId } })
+    .increment('voteCount', { where: { id: req.body.pollOptionId } })
     .then(results => {
       // wtf sequelize? why you have so many nested arrays?
       if (!results[0][0].length) { throw new Error('poll option does not exist') }
