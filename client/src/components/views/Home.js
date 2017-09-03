@@ -80,7 +80,7 @@ class Home extends Component {
               <div className="uk-margin-top">
                 <div><span className="github-icon" ref="ukGithub"></span></div>
                 <h3>Open Source</h3>
-                <p>This app is open source and free to use! No monthly subscriptions to hold you back here.</p>
+                <p>This app is <a href="https://github.com/jCroxford/voting-app" target="_blank">open source</a> and free to use! No monthly subscriptions to hold you back here.</p>
               </div>
 
               <div className="uk-margin-top">

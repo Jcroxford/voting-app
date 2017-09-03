@@ -20,7 +20,7 @@ class Nav extends Component {
 
   componentDidMount() {
     this.refs.ukToggle.setAttribute('uk-toggle', 'target: #offcanvas-usage')
-    this.refs.ukMenu.setAttribute('uk-icon', 'icon: menu')
+    this.refs.ukMenu.setAttribute('uk-icon', 'icon: menu; ratio: 2;')
     this.refs.ukOffcanvas.setAttribute('uk-offcanvas', '')
   }
 

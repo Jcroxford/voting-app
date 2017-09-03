@@ -69,7 +69,7 @@ class Polls extends Component {
 
   componentDidMount() {
     this.refs.ukSpinner.setAttribute('uk-spinner', '')
-    this.refs.ukScrollspy.setAttribute('uk-scrollspy', 'target: > div; cls:uk-animation-fade uk-transform-origin-bottom-right; delay: 25')
+    this.refs.ukScrollspy.setAttribute('uk-scrollspy', 'target: > div; cls:uk-animation-fade uk-transform-origin-bottom-right; delay: 15')
   }
   
   componentWillMount() {
