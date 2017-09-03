@@ -130,7 +130,7 @@ class PollDetail extends Component {
             </div>
 
             <div className="uk-card-footer">
-              <div className="poll-link">{`https://votehub-app.herokuapp.com/${encodeURI(this.props.match.url)}`}</div>
+              <div className="poll-link">{`https://votehub-app.herokuapp.com${encodeURI(this.props.match.url)}`}</div>
             </div>
             
           </div>
