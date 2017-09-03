@@ -29,7 +29,7 @@ router.get('/signup/usernameIsUsed/:username', (req, res) => {
     .catch(error => res.status(500).json({ error: 'internal error occured'}))
 })
 
-router.post('/signup', (req, res) => {
+router.put('/signup', (req, res) => {
   const {username, email, password} = req.body
 
   // validate body info
@@ -121,7 +121,7 @@ router.post('/user/password/change', requireAuth, (req, res) => {
     })
 })
 
-router.post('/user/createPoll', requireAuth, (req, res) => {
+router.put('/user/createPoll', requireAuth, (req, res) => {
   // verify user and insert
   models.Polls
     .create({
@@ -149,7 +149,7 @@ router.get('/user/polls', requireAuth, (req, res) => {
     })
 })
 
-router.get('/user/poll/delete/:pollId', requireAuth, (req, res) => {
+router.delete('/user/poll/delete/:pollId', requireAuth, (req, res) => {
   models.Polls
     .findOne({
       where: {
@@ -211,9 +211,9 @@ router.get('/polls/detail/:pollId', (req, res) => {
     })
 })
 
-router.get('/poll/vote/:pollOptionId', (req, res) => {
+router.post('/poll/vote/', (req, res) => {
   models.PollOptions
-    .increment('voteCount', { where: { id: req.params.pollOptionId } })
+    .increment('voteCount', { where: { id: req.body.pollOptionId } })
     .then(results => {
       // wtf sequelize? why you have so many nested arrays?
       if (!results[0][0].length) { throw new Error('poll option does not exist') }

@@ -73,7 +73,7 @@ class PollDetail extends Component {
 
     if(localVotes.includes(pollId)) { return alert('you have already voted on this poll!') }
 
-    axios.get(`${baseRoute}/api/poll/vote/${selectedOptionId}`)
+    axios.post(`${baseRoute}/api/poll/vote/`, { pollOptionId: selectedOptionId })
       .then(response => {
         const pollOptionIndex = pollOptions.findIndex(option => option.id === selectedOptionId)
 

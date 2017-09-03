@@ -78,7 +78,7 @@ describe('user/authenticated routes', () => {
       }
 
       request(app)
-        .post('/api/signup')
+        .put('/api/signup')
         .send(user)
         .expect(400)
         .expect(res => expect(res.body).to.include({error: 'invalid input'}))
@@ -89,7 +89,7 @@ describe('user/authenticated routes', () => {
       const user = users[0]
 
       request(app)
-        .post('/api/signup')
+        .put('/api/signup')
         .send(user)
         .expect(400)
         .expect(res => expect(res.body).to.include({error: 'username or email in use'}))
@@ -104,7 +104,7 @@ describe('user/authenticated routes', () => {
       }
 
       request(app)
-        .post('/api/signup')
+        .put('/api/signup')
         .send(user)
         .expect(200)
         .expect(res => expect(res.body).to.have.all.keys(['token', 'username']))
@@ -223,7 +223,7 @@ describe('user/authenticated routes', () => {
     it('should return error if route is not authenticated', (done) => {
       // does not have authorization header attached
       request(app)
-        .post('/api/user/createPoll')
+        .put('/api/user/createPoll')
         .send(poll)
         .expect(401)
         .expect(res => expect(res.unauthorized).to.be.true)
@@ -232,7 +232,7 @@ describe('user/authenticated routes', () => {
 
     it('should create a poll if given a valid jwt', (done) => {
       request(app)
-        .post('/api/user/createPoll')
+        .put('/api/user/createPoll')
         .set('authorization', token)
         .send(poll)
         .expect(200)
@@ -283,7 +283,7 @@ describe('user/authenticated routes', () => {
 
     it('should return error if not given a proper jwt authorization', (done) => {
       request(app)
-        .get(`/api/user/poll/delete/${pollOptionId}`)
+        .delete(`/api/user/poll/delete/${pollOptionId}`)
         .set('authorization', `fake${token}`)
         .expect(401)
         .expect(res => expect(res.unauthorized).to.be.true)
@@ -294,24 +294,15 @@ describe('user/authenticated routes', () => {
       pollOptionId = 0
 
       request(app)
-        .get(`/api/user/poll/delete/${pollOptionId}`)
+        .delete(`/api/user/poll/delete/${pollOptionId}`)
         .set('authorization', token)
         .expect(401)
         .expect(res => expect(res.body).to.include({ error: 'insufficient access to poll or poll does not exist' }))
         .end(done)
     })
 
-    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
-      request(app)
-        .get(`/api/poll/vote/${pollOptionId}`)
-        .expect(200)
-        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
-        .end(done)
-    })
-
     afterEach(destroyPolls)
   })
-// should return success value if user is authorized and attempts to delete one of their own polls
 
 })
 
@@ -370,7 +361,7 @@ describe('global/public routes', () => {
     afterEach(destroyPolls)
   })
 
-  describe('/api/poll/vote/:pollOptionId', () => {
+  describe('/api/poll/vote/', () => {
     beforeEach(populatePolls)
 
     let pollOptionId
@@ -385,12 +376,27 @@ describe('global/public routes', () => {
     })
 
     it('should return error if given an invalid poll option id', (done) => {
-      pollOptionId = 0
+      const body ={
+        pollOptionId: 0
+      } 
 
       request(app)
-        .get(`/api/poll/vote/${pollOptionId}`)
+        .post('/api/poll/vote/')
+        .send(body)
         .expect(400)
         .expect(res => expect(res.body).to.include({ error: 'poll option does not exist' }))
+        .end(done)
+    })
+
+    it('should update poll and return valid json with incremented poll option vote count if given a proper poll option id', (done) => {
+      const body = {
+        pollOptionId
+      }
+      request(app)
+        .post('/api/poll/vote/')
+        .send(body)
+        .expect(200)
+        .expect(res => expect(res.body).to.have.all.keys(['updatedVoteCount']))
         .end(done)
     })
 
