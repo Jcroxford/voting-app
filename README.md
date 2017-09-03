@@ -1,5 +1,5 @@
 # Voting App
-This is a basic Node, Express, and PostgreSQL app built to fulfill the [FreeCodeCamp](https://www.freecodecamp.com) project requirements for the [Voting App](https://www.freecodecamp.com/challenges/build-a-voting-app) project.
+This is a basic Node, Express, and PostgreSQL app. built to fulfill the [FreeCodeCamp](https://www.freecodecamp.com) project requirements for the [Voting App](https://www.freecodecamp.com/challenges/build-a-voting-app) project. User stories below explain basic functionalities. You can view a live version of the app [here](https://votehub-app.herokuapp.com/)
 
 ## User Stories(requirements)
 1. As an authenticated user, I can keep my polls and come back later to access them.
@@ -63,4 +63,4 @@ This project was built using PostgreSQL. It's reccomended you use and have postg
 
 
 ## TODOS
-* add details to github when deploying app to heroku(meaning like the url and stuff)
+* all done for now! Leaving to category here though just in case.
