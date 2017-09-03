@@ -32,7 +32,7 @@ The config file must contain the following variables for both tseting and develo
 ```json
 {
   "test": {
-    "port": 3000,
+    "port": 3030,
     "environment": "test",
     "database": "voting-app-test",
     "dbUsername": "root",
@@ -40,7 +40,7 @@ The config file must contain the following variables for both tseting and develo
     "dialect": "postgres"
   },
   "development": {
-    "port": 3000,
+    "port": 3030,
     "environment": "development",
     "database": "voting-app-dev",
     "dbUsername": "root",
