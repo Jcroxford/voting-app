@@ -76,7 +76,13 @@ class Settings extends Component {
         // settings currentPasswordIsCorrect to true resets error message if a successful change 
         // attempt happens after a failed attempt
         this.setState(
-          { passwordChanged: true, currentPasswordIsCorrect: true },
+          { 
+            passwordChanged: true, 
+            currentPasswordIsCorrect: true,
+            passwordAttempt: '',
+            newPassword: '',
+            confirmNewPassword: ''
+          },
           () => self.updateSubmissionStatus()
         )
       })
