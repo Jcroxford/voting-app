@@ -60,7 +60,3 @@ module.exports.secret = 'some secret value'
 This project was built using PostgreSQL. It's reccomended you use and have postgres installed when running project locally.
 
 **Note** Make sure `client/src/utils/api.js` has the correct local route for local api server.
-
-
-## TODOS
-* all done for now! Leaving to category here though just in case.
